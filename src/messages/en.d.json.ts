@@ -2,6 +2,10 @@
 // See: https://next-intl.dev/docs/workflows/typescript#messages-arguments
 
 declare const messages: {
+  "Metadata": {
+    "title": "Restaurant Reservation",
+    "description": "The best way to reserve your favorite restaurant"
+  },
   "TopNav": { "restaurants": "Restaurants", "reservations": "Reservations" },
   "HomePage": { "title": "Restaurant Reservation", "greeting": "Hello {username}" },
   "LocaleSwitcher": {

@@ -1,6 +1,12 @@
-import { useTranslations } from "next-intl";
+import { Context, use } from "react";
+import { Locale, useTranslations } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
 
-export default function Home() {
+export default function Home({ params }: { params: Context<{ locale: Locale }> }) {
+  const { locale } = use(params);
+  // Enable static rendering
+  setRequestLocale(locale);
+
   const text = useTranslations("HomePage");
   return (
     <main>
