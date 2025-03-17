@@ -4,6 +4,6 @@
   "HomePage": { "title": "จองร้านอาหาร", "greeting": "สวัสดี {username}" },
   "LocaleSwitcher": {
     "label": "เปลี่ยนภาษา",
-    "locale": "{locale, select, th {🇹🇭 ไทย} en {🇺🇸 English} other {ไม่ทราบ}}"
+    "locale": "{locale, select, th {ไทย} en {English} other {ไม่ทราบ}}"
   }
 }

@@ -4,6 +4,8 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
+import { getTheme } from "@/libs/theme";
+import { ThemeProvider } from "@/provider/theme";
 import TopNav from "@/components/TopNav";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -27,18 +29,20 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
-
   // Enable static rendering
   setRequestLocale(locale);
 
+  const theme = await getTheme();
+
   return (
     <html lang={`${locale}-th`}>
-      <body>
+      {/* body tag is in provider */}
+      <ThemeProvider cookieTheme={theme}>
         <NextIntlClientProvider>
           <TopNav />
           <div className="mt-16">{children}</div>
         </NextIntlClientProvider>
-      </body>
+      </ThemeProvider>
     </html>
   );
 }
