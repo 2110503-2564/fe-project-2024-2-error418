@@ -1,0 +1,75 @@
+.label {
+  position: relative;
+  display: block;
+  background-color: white;
+  border-radius: 2rem;
+  cursor: pointer;
+
+  --width: 4rem;
+  --height: 1.5rem;
+  --padding-y: 0.125rem;
+  --padding-x: 0.25rem;
+  --inner-width: calc(var(--width) - var(--padding-x) * 2);
+  --inner-height: calc(var(--height) - var(--padding-y) * 2);
+  width: var(--width);
+  height: var(--height);
+  padding: var(--padding-y) var(--padding-x);
+}
+
+.label:has(:not(input:checked):focus-visible) {
+  outline: 1px solid black;
+}
+.label:has(input:checked:focus-visible) {
+  outline: 1px solid white;
+}
+
+.label > * {
+  position: absolute;
+  top: var(--padding-y);
+  height: calc(100% - var(--padding-y) * 2);
+  aspect-ratio: 1;
+  transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
+}
+
+.label > svg {
+  left: var(--padding-x);
+}
+
+.label > .ball {
+  right: var(--padding-x);
+}
+
+.sun {
+  fill: gold;
+  opacity: 1;
+}
+.moon {
+  fill: black;
+  opacity: 0;
+}
+.ball {
+  background-color: black;
+  border-radius: 50%;
+}
+
+.label:has(input:checked) .sun {
+  opacity: 0;
+}
+.label:has(input:checked) .moon {
+  fill: white;
+  opacity: 1;
+}
+.label:has(input:checked) .ball {
+  background-color: gold;
+}
+.label:has(input:checked) {
+  background-color: black;
+}
+
+.label:has(input:checked) .sun,
+.label:has(input:checked) .moon {
+  transform: translateX(calc(var(--inner-width) - var(--inner-height)));
+}
+.label:has(input:checked) .ball {
+  transform: translateX(calc(var(--inner-height) - var(--inner-width)));
+}
