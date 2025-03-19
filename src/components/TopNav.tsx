@@ -6,6 +6,7 @@ import ThemeSwitcher from "./ThemeSwitcher";
 export default function TopNav() {
   const text = useTranslations("TopNav");
   const links: { href: string; name: string }[] = [
+    { href: "/", name: text("home") },
     { href: "/restaurants", name: text("restaurants") },
     { href: "/reservations", name: text("reservations") },
   ];

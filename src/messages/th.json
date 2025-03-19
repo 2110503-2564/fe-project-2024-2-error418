@@ -1,6 +1,6 @@
 {
   "Metadata": { "title": "จองร้านอาหาร", "description": "แอพจองร้านอาหารโปรดในดวงใจคุณ" },
-  "TopNav": { "restaurants": "ร้านอาหาร", "reservations": "การจอง" },
+  "TopNav": { "home": "หน้าหลัก", "restaurants": "ร้านอาหาร", "reservations": "การจอง" },
   "HomePage": { "title": "จองร้านอาหาร", "greeting": "สวัสดี {username}" },
   "LocaleSwitcher": {
     "label": "เปลี่ยนภาษา",
