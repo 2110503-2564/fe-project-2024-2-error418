@@ -14,9 +14,7 @@ export type RestaurantDB = {
   admin: mongoose.Types.ObjectId[];
 };
 
-type RestaurantModel = RestaurantDB & mongoose.Document;
-
-const RestaurantSchema = new mongoose.Schema<RestaurantModel>({
+const RestaurantSchema = new mongoose.Schema<RestaurantDB>({
   name: {
     type: String,
     required: [true, "Please add a name"],
@@ -41,5 +39,6 @@ const RestaurantSchema = new mongoose.Schema<RestaurantModel>({
   admin: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
 });
 
-export default mongoose.models.Restaurant
-  || mongoose.model<RestaurantModel>("Restaurant", RestaurantSchema);
+const createModel = () => mongoose.model<RestaurantDB>("Restaurant", RestaurantSchema);
+
+export default (mongoose.models.Restaurant as ReturnType<typeof createModel>) || createModel();

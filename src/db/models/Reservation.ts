@@ -10,9 +10,7 @@ type ReservationDB = {
   createdAt: Date;
 };
 
-type ReservationModel = ReservationDB & mongoose.Document;
-
-const ReservationSchema = new mongoose.Schema<ReservationModel>({
+const ReservationSchema = new mongoose.Schema<ReservationDB>({
   reserveDate: { type: Date, required: true },
   user: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
   restaurant: { type: mongoose.Schema.ObjectId, ref: "Restaurant", required: true },
@@ -26,5 +24,6 @@ const ReservationSchema = new mongoose.Schema<ReservationModel>({
   createdAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.models.Reservation
-  || mongoose.model<ReservationModel>("Reservation", ReservationSchema);
+const createModel = () => mongoose.model<ReservationDB>("Reservation", ReservationSchema);
+
+export default (mongoose.models.Reservation as ReturnType<typeof createModel>) || createModel();

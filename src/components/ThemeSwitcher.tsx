@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import { MoonIcon, SunIcon } from "@heroicons/react/16/solid";
 import styles from "./themeSwitcher.module.css";
-import { useThemeContext } from "@/provider/theme";
+import { useThemeContext } from "@/provider/ThemeProvider";
 
 export default function ThemeSwitcher() {
   const [isPending, startTransition] = useTransition();

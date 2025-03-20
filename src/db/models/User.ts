@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import ms from "ms";
 
-export type UserDB = {
+interface UserDB {
   name: string;
   phone: string;
   email: string;
@@ -13,11 +11,9 @@ export type UserDB = {
   resetPasswordExpire?: Date;
   restaurantOwner: mongoose.Types.ObjectId[];
   restaurantAdmin: mongoose.Types.ObjectId[];
-};
+}
 
-type UserModel = UserDB & mongoose.Document;
-
-const UserSchema = new mongoose.Schema<UserModel>({
+const UserSchema = new mongoose.Schema<UserDB>({
   name: { type: String, required: [true, "Please add a name"] },
   phone: { type: String, required: [true, "Please add a phone number"] },
   email: {
@@ -29,12 +25,7 @@ const UserSchema = new mongoose.Schema<UserModel>({
       "Please add a valid email",
     ],
   },
-  password: {
-    type: String,
-    required: [true, "Please add a password"],
-    minlength: 6,
-    select: false,
-  },
+  password: { type: String, required: true, minlength: 6, select: false },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   createdAt: { type: Date, default: Date.now },
@@ -49,14 +40,6 @@ UserSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-UserSchema.methods.getSignedJwtToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET as jwt.Secret, {
-    expiresIn: process.env.JWT_EXPIRE as ms.StringValue,
-  });
-};
+const createModel = () => mongoose.model<UserDB>("User", UserSchema);
 
-UserSchema.methods.matchPassword = async function (password: string) {
-  return await bcrypt.compare(password, this.password);
-};
-
-export default mongoose.models.User || mongoose.model<UserModel>("User", UserSchema);
+export default (mongoose.models.User as ReturnType<typeof createModel>) || createModel();

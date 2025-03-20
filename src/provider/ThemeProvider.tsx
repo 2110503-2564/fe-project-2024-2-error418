@@ -8,7 +8,7 @@ export const ThemeContext = createContext<
   | undefined
 >(undefined);
 
-export function ThemeProvider({
+export default function ThemeProvider({
   children,
   cookieTheme,
 }: {

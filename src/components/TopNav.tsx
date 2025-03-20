@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import LocaleSwitcher from "./LocaleSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
+import Profile from "./Profile";
 
 export default function TopNav() {
   const text = useTranslations("TopNav");
@@ -25,7 +26,7 @@ export default function TopNav() {
       <div className="flex items-center gap-4">
         <LocaleSwitcher />
         <ThemeSwitcher />
-        <span>Profile</span>
+        <Profile />
       </div>
     </nav>
   );

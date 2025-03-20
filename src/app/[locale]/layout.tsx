@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 import { getTheme } from "@/libs/theme";
-import { ThemeProvider } from "@/provider/theme";
+import ThemeProvider from "@/provider/ThemeProvider";
+import NextAuthProvider from "@/provider/NextAuthProvider";
 import TopNav from "@/components/TopNav";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -33,15 +35,18 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const theme = await getTheme();
+  const session = await getServerSession();
 
   return (
     <html lang={`${locale}-th`}>
       {/* body tag is in provider */}
       <ThemeProvider cookieTheme={theme}>
-        <NextIntlClientProvider>
-          <TopNav />
-          <div className="mt-16">{children}</div>
-        </NextIntlClientProvider>
+        <NextAuthProvider session={session}>
+          <NextIntlClientProvider>
+            <TopNav />
+            <div className="mt-16">{children}</div>
+          </NextIntlClientProvider>
+        </NextAuthProvider>
       </ThemeProvider>
     </html>
   );
