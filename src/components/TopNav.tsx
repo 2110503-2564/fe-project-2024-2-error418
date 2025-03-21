@@ -1,10 +1,11 @@
+import { Session } from "next-auth";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import LocaleSwitcher from "./LocaleSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
-import Profile from "./Profile";
+import Avatar from "./Avatar";
 
-export default function TopNav() {
+export default function TopNav({ session }: { session: Session | null }) {
   const text = useTranslations("TopNav");
   const links: { href: string; name: string }[] = [
     { href: "/", name: text("home") },
@@ -26,7 +27,7 @@ export default function TopNav() {
       <div className="flex items-center gap-4">
         <LocaleSwitcher />
         <ThemeSwitcher />
-        <Profile />
+        <Avatar session={session} />
       </div>
     </nav>
   );
