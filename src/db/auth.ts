@@ -1,5 +1,7 @@
 "use server";
 
+import { AuthError } from "next-auth";
+import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import User from "./models/User";
@@ -49,7 +51,14 @@ export async function registerUser(formState: unknown, formData: FormData) {
 }
 
 export async function loginUser(formState: unknown, formData: FormData) {
-  await signIn("credentials", formData);
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return redirect(`/login?error=${error.type}`);
+    }
+    throw error;
+  }
 }
 
 export async function logoutUser() {
