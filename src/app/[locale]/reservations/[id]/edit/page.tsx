@@ -1,5 +1,5 @@
 import { getReservation } from "@/db/reservations";
-import EditRestaurantForm from "./form";
+import EditReservationForm from "./form";
 
 export default async function EditReservation({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -10,7 +10,7 @@ export default async function EditReservation({ params }: { params: Promise<{ id
   }
   return (
     <main>
-      <EditRestaurantForm reservation={reservation.data} />
+      <EditReservationForm reservation={reservation.data} />
     </main>
   );
 }
