@@ -19,7 +19,7 @@
     "dayjs": "^1.11.13",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
-    "next": "15.2.2",
+    "next": "^15.2.3",
     "next-auth": "^5.0.0-beta.25",
     "next-intl": "^4.0.2",
     "react": "^19.0.0",
