@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-type ReservationDB = {
+export type ReservationDB = {
   reserveDate: Date;
   user: mongoose.Types.ObjectId;
   restaurant: mongoose.Types.ObjectId;
