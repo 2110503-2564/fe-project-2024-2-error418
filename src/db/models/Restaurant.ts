@@ -1,5 +1,19 @@
 import mongoose from "mongoose";
 
+export type RestaurantJSON = {
+  id: string;
+  name: string;
+  address: string;
+  district: string;
+  province: string;
+  postalcode: string;
+  region: string;
+  phone?: string;
+  createdAt: Date;
+  owner: string;
+  admin: string[];
+};
+
 export type RestaurantDB = {
   _id: mongoose.Types.ObjectId;
   name: string;

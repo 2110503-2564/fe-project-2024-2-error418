@@ -1,17 +1,19 @@
 "use server";
 
 import { z } from "zod";
-import dbConnect from "./dbConnect";
-import Restaurant, { RestaurantDB } from "./models/Restaurant";
 import { auth } from "@/auth";
+import dbConnect from "./dbConnect";
 import User from "./models/User";
+import Restaurant, { RestaurantJSON } from "./models/Restaurant";
+import Reservation from "./models/Reservation";
+import { clearRestaurantObjectID } from "./models/utils";
 
 export async function getRestaurants(
   options: { select?: string; sort?: string; page?: string; limit?: string } = {}
 ) {
   await dbConnect();
   try {
-    let query = Restaurant.find();
+    let query = Restaurant.find().lean();
     if (options.select) {
       const fields = options.select.split(",").join(" ");
       query = query.select(fields);
@@ -34,13 +36,13 @@ export async function getRestaurants(
       next: endIndex < totalIndex ? page + 1 : undefined,
     };
 
-    const restaurants = await query;
+    const restaurants = (await query).map((restaurant) => clearRestaurantObjectID(restaurant));
     if (restaurants) {
       return {
         success: true,
         pagination,
         count: restaurants.length,
-        data: restaurants as RestaurantDB[],
+        data: restaurants as RestaurantJSON[],
       };
     }
   } catch (err) {
@@ -59,7 +61,10 @@ const RestaurantForm = z.object({
   phone: z.string(),
 });
 
-export async function createRestaurant(formState: unknown, formData: FormData) {
+export async function createRestaurant(
+  formState: unknown,
+  formData: FormData
+): Promise<{ success: true; restaurant: RestaurantJSON } | { success: false }> {
   try {
     const user = (await auth())?.user;
     if (user) {
@@ -74,10 +79,12 @@ export async function createRestaurant(formState: unknown, formData: FormData) {
       });
       if (validatedFields.success) {
         await dbConnect();
-        const restaurant = await Restaurant.insertOne({ ...validatedFields.data, owner: user.id });
+        const restaurant = clearRestaurantObjectID(
+          await Restaurant.insertOne({ ...validatedFields.data, owner: user.id })
+        );
         if (restaurant) {
           await User.findByIdAndUpdate(user.id, { $addToSet: { restaurantOwner: restaurant.id } });
-          return { success: true };
+          return { success: true, restaurant: restaurant };
         }
       }
     }
@@ -87,45 +94,75 @@ export async function createRestaurant(formState: unknown, formData: FormData) {
   return { success: false };
 }
 
-async function fetchRestaurant(id: string) {
+async function fetchRestaurant(id: string): Promise<RestaurantJSON | null> {
   try {
     await dbConnect();
-    return await Restaurant.findById(id);
+    const restaurant = clearRestaurantObjectID(await Restaurant.findById(id).lean());
+    return restaurant;
   } catch (err) {
     console.error(err);
   }
+  return null;
 }
 
-export async function getRestaurant(id: string) {
+export async function getRestaurant(
+  id: string
+): Promise<{ success: true; data: RestaurantJSON } | { success: false }> {
   const restaurant = await fetchRestaurant(id);
   if (restaurant) {
-    return { success: true, data: restaurant as RestaurantDB };
+    return { success: true, data: restaurant };
   }
   return { success: false };
 }
 
-export async function updateRestaurant(formState: unknown, formData: FormData) {
+export async function editRestaurant(
+  formState: unknown,
+  formData: FormData
+): Promise<{ success: true; data: RestaurantJSON } | { success: false }> {
   try {
     const user = (await auth())?.user;
     const restaurantID = (formData.get("restaurantID") as string) || null;
     if (!user || !restaurantID) return { success: false };
+
     const restaurant = await fetchRestaurant(restaurantID);
-    const validatedFields = RestaurantForm.safeParse({
-      name: formData.get("name"),
-      address: formData.get("address"),
-      district: formData.get("district"),
-      province: formData.get("province"),
-      postalcode: formData.get("postalcode"),
-      region: formData.get("region"),
-      phone: formData.get("phone"),
-    });
-    if (restaurant && restaurant.owner.toString() == user.id) {
-      const updatedRestaurant = await Restaurant.findByIdAndUpdate(
-        restaurantID,
-        validatedFields.data,
-        { new: true, runValidators: true }
+    if (restaurant && restaurant.owner == user.id) {
+      const validatedFields = RestaurantForm.safeParse({
+        name: formData.get("name"),
+        address: formData.get("address"),
+        district: formData.get("district"),
+        province: formData.get("province"),
+        postalcode: formData.get("postalcode"),
+        region: formData.get("region"),
+        phone: formData.get("phone"),
+      });
+      const updatedRestaurant = clearRestaurantObjectID(
+        await Restaurant.findByIdAndUpdate(restaurantID, validatedFields.data, {
+          new: true,
+          runValidators: true,
+        })
       );
-      return { success: true, data: updatedRestaurant as RestaurantDB };
+      if (updatedRestaurant) return { success: true, data: updatedRestaurant };
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  return { success: false };
+}
+
+export async function deleteRestaurant(id: string) {
+  await dbConnect();
+  try {
+    const user = (await auth())?.user;
+    if (!user) return { success: false };
+    const restaurant = await fetchRestaurant(id);
+    if (restaurant && restaurant.owner == user.id) {
+      await Promise.all([
+        User.findByIdAndUpdate(user.id, { $pull: { restaurantOwner: id } }),
+        User.updateMany({}, { $pull: { restaurantAdmin: id } }),
+        Reservation.deleteMany({ restaurant: id }),
+        Restaurant.findByIdAndDelete(id),
+      ]);
+      return { success: true };
     }
   } catch (err) {
     console.error(err);

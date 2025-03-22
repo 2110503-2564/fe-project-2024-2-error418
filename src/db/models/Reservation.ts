@@ -1,6 +1,18 @@
 import mongoose from "mongoose";
 
+export type ReservationJSON = {
+  id: string;
+  reserveDate: Date;
+  user: string;
+  restaurant: string;
+  personCount: number;
+  approvalStatus: "pending" | "canceled" | "approved" | "rejected";
+  paymentStatus: boolean;
+  createdAt: Date;
+};
+
 export type ReservationDB = {
+  _id: mongoose.Types.ObjectId;
   reserveDate: Date;
   user: mongoose.Types.ObjectId;
   restaurant: mongoose.Types.ObjectId;
