@@ -10,7 +10,15 @@ import { clearRestaurantObjectID } from "./models/utils";
 
 export async function getRestaurants(
   options: { select?: string; sort?: string; page?: string; limit?: string } = {}
-) {
+): Promise<
+  | {
+      success: true;
+      pagination: { limit: number; prev?: number; next?: number };
+      count: number;
+      data: RestaurantJSON[];
+    }
+  | { success: false }
+> {
   await dbConnect();
   try {
     let query = Restaurant.find().lean();
