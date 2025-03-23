@@ -93,7 +93,7 @@ export default function ReservationSearch({
             </li>
           ))
         : <div className="col-span-full py-8 text-center">
-            No restaurants found matching "{searchQuery}"
+            No restaurants found matching &apos;{searchQuery}&apos;
           </div>
         }
       </ul>

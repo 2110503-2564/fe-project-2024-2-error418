@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { editReservation, getUserReservations, PopulatedReservationJSON } from "@/db/reservations";
+import { editReservation, getUserReservations } from "@/db/reservations";
 import ReservationSearch from "@/components/ReservationSearch";
 import { revalidatePath } from "next/cache";
 
