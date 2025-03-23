@@ -21,8 +21,7 @@ export default async function MyRestaurants() {
       <ul className="grid grid-cols-[repeat(auto-fit,minmax(16.5rem,1fr))] justify-items-center gap-8 py-4">
         {restaurants.data.map((e) => (
           <li key={e.id}>
-            {/* GO TO DASHBOARD */}
-            <Link href={`/restaurants/${e.id}`}>
+            <Link href={`/dashboard/restaurants/${e.id}`}>
               <Card {...e}></Card>
             </Link>
           </li>
