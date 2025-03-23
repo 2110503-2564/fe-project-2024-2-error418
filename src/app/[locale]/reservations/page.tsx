@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 export default async function Reservations() {
   const session = await auth();
   if (!session) {
-    redirect("/login");
+    redirect(`/login?returnTo=${encodeURIComponent("/reservations")}`);
   }
 
   const reservations = await getUserReservations();

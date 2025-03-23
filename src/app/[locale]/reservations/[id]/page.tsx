@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 export default async function Reservation({ params }: { params: Promise<{ id: string }> }) {
   const user = (await auth())?.user;
   if (!user) {
-    redirect("/login");
+    redirect(`/login?returnTo=${encodeURIComponent("/reservations")}`);
   }
   const { id } = await params;
   const reservation = await getReservation(id);
