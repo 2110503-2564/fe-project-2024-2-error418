@@ -1,11 +1,21 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root,
 .theme-light {
   --background: #ffffff;
   --foreground: #171717;
   --primary: #fee685;
   --inputbg: #ffffff;
+  --text-primary: #333;
+  --text-secondary: #777;
+  --bg-primary: #fff;
+  --bg-secondary: #f9f9f9;
+  --accent-color: #fee685;
+  --border-color: #ddd;
 }
 
 .theme-dark {
@@ -13,6 +23,12 @@
   --foreground: #ededed;
   --primary: #927d2b;
   --inputbg: #ffffff;
+  --text-primary: #eee;
+  --text-secondary: #bbb;
+  --bg-primary: #121212;
+  --bg-secondary: #222;
+  --accent-color: #927d2b;
+  --border-color: #444;
 }
 
 body {
