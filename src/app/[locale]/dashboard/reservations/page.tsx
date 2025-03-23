@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 export default async function ReservationDashboard() {
   const user = (await auth())?.user;
   if (!user) {
-    redirect("/login");
+    redirect(`/login?returnTo=${encodeURIComponent("/dashboard/reservations")}`);
   }
 
   const [approvalStatus, userTopRestaurant] = await Promise.all([

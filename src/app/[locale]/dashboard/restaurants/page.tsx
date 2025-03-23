@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 export default async function MyRestaurants() {
   const session = await auth();
   if (!session) {
-    redirect(`/login?returnTo=${encodeURIComponent("/restaurants")}`);
+    redirect(`/login?returnTo=${encodeURIComponent("/dashboard/restaurants")}`);
   }
   const restaurants = await getRestaurants({}, { owner: session.user.id });
   if (!restaurants.success) {

@@ -6,7 +6,7 @@ import { getApprovalStatus, getFrequency } from "@/db/dashboard";
 export default async function RestaurantDashboard({ params }: { params: Promise<{ id: string }> }) {
   const user = (await auth())?.user;
   if (!user) {
-    redirect("/login");
+    redirect(`/login?returnTo=${encodeURIComponent("/dashboard/restaurants")}`);
   }
 
   const { id } = await params;
