@@ -14,46 +14,68 @@ export default async function Reservation({ params }: { params: Promise<{ id: st
   const { id } = await params;
   const reservation = await getReservation(id);
   if (!reservation.success) {
-    return <main>Cannot fetch data</main>;
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-white">
+        <div className="text-gray-700">Cannot fetch data</div>
+      </main>
+    );
   }
   const { data } = reservation;
+
+  const reserveDate = new Date(data.reserveDate); // Convert to Date object
+
   return (
-    <main>
-      <div className="flex flex-row gap-4 p-4">
-        <Image
-          className="w-[50%] rounded"
-          src="/img/restaurant.jpg"
-          alt={data.restaurant.name}
-          width={0}
-          height={0}
-          sizes="50vw"
-          priority
-        />
-        <div className="flex flex-col items-start gap-2">
-          <h1 className="text-2xl font-bold">{data.restaurant.name}</h1>
-          <span>Reserved On: {data.reserveDate.toLocaleString()}</span>
-          <span>Person Count: {data.personCount}</span>
-          <div className="mt-4 flex gap-4">
-            {user && (
-              <Link href={`/restaurants/${data.restaurant.id}`}>
-                <Button variant="contained" type="button">
-                  View Restaurant
-                </Button>
-              </Link>
-            )}
-            {(data.approvalStatus == "pending" || data.approvalStatus == "approved") && (
-              <form
-                action={async () => {
-                  "use server";
-                  await editReservation(id, "canceled");
-                  revalidatePath("/reservations");
-                }}
-              >
-                <Button variant="contained" type="submit">
-                  Cancel
-                </Button>
-              </form>
-            )}
+    <main className="min-h-screen">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-row gap-8">
+          <div className="w-[50%]">
+            <Image
+              className="rounded shadow-md"
+              src="/img/restaurant.jpg"
+              alt={data.restaurant.name}
+              width={600}
+              height={400}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              style={{ width: "100%", height: "auto" }}
+              priority
+            />
+          </div>
+          <div className="flex flex-col items-start gap-4">
+            <h1 className="text-3xl font-bold text-yellow-600">{data.restaurant.name}</h1>
+            <div className="text-xl">
+              <span>Reserved On: {reserveDate.toLocaleString()}</span>
+              <br />
+              <span>Person Count: {data.personCount}</span>
+            </div>
+            <div className="mt-6 flex gap-4">
+              {user && (
+                <Link href={`/restaurants/${data.restaurant.id}`}>
+                  <Button
+                    variant="contained"
+                    className="rounded bg-yellow-500 px-4 py-2 font-bold text-white shadow-md hover:bg-yellow-700"
+                  >
+                    View Restaurant
+                  </Button>
+                </Link>
+              )}
+              {(data.approvalStatus == "pending" || data.approvalStatus == "approved") && (
+                <form
+                  action={async () => {
+                    "use server";
+                    await editReservation(id, "canceled");
+                    revalidatePath("/reservations");
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    className="rounded bg-red-500 px-4 py-2 font-bold text-white shadow-md hover:bg-red-700"
+                    type="submit"
+                  >
+                    Cancel
+                  </Button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </div>
