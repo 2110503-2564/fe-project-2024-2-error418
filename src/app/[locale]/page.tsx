@@ -11,7 +11,6 @@ export default function Home({ params }: { params: Promise<{ locale: Locale }> }
   return (
     <main>
       <h1>{text("title")}</h1>
-      <p>{text("greeting", { username: "Dave" })}</p>
     </main>
   );
 }

@@ -1,19 +1,27 @@
+import { auth } from "@/auth";
 import { RestaurantJSON } from "@/db/models/Restaurant";
 import { getRestaurants } from "@/db/restaurants";
-import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default async function Restaurants() {
-  const restaurants = await getRestaurants();
+export default async function MyRestaurants() {
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
+  const restaurants = await getRestaurants({}, { owner: session.user.id });
   if (!restaurants.success) {
     return <main>Cannot fetch data</main>;
   }
+
   return (
     <main>
-      <h1>Restaurants</h1>
+      <h1>My Restaurants</h1>
       <ul className="grid grid-cols-[repeat(auto-fit,minmax(16.5rem,1fr))] justify-items-center gap-8 py-4">
         {restaurants.data.map((e) => (
           <li key={e.id}>
+            {/* GO TO DASHBOARD */}
             <Link href={`/restaurants/${e.id}`}>
               <Card {...e}></Card>
             </Link>

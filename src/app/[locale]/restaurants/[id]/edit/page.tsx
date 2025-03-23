@@ -10,6 +10,7 @@ export default async function EditRestaurant({ params }: { params: Promise<{ id:
   }
   return (
     <main>
+      <h1>Edit Restaurant</h1>
       <EditRestaurantForm restaurant={restaurant.data} />
     </main>
   );

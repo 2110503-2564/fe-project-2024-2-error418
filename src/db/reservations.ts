@@ -9,9 +9,22 @@ import Reservation, { ReservationDB, ReservationJSON } from "./models/Reservatio
 import { clearReservationObjectID, clearRestaurantObjectID } from "./models/utils";
 
 type PopulatedReservationDB = Omit<ReservationDB, "restaurant"> & { restaurant: RestaurantDB };
-type PopulatedReservationJSON = Omit<ReservationJSON, "restaurant"> & {
+export type PopulatedReservationJSON = Omit<ReservationJSON, "restaurant"> & {
   restaurant: RestaurantJSON;
 };
+
+function clearPopulatedObjectID(e: PopulatedReservationDB): PopulatedReservationJSON {
+  return {
+    id: e._id.toString(),
+    reserveDate: e.reserveDate,
+    user: e.user.toString(),
+    personCount: e.personCount,
+    approvalStatus: e.approvalStatus,
+    paymentStatus: e.paymentStatus,
+    createdAt: e.createdAt,
+    restaurant: clearRestaurantObjectID(e.restaurant) as RestaurantJSON,
+  };
+}
 
 export async function getUserReservations(): Promise<
   { success: true; count: number; data: PopulatedReservationJSON[] } | { success: false }
@@ -27,16 +40,7 @@ export async function getUserReservations(): Promise<
         return {
           success: true,
           count: reservations.length,
-          data: reservations.map((e) => ({
-            id: e._id.toString(),
-            reserveDate: e.reserveDate,
-            user: e.user.toString(),
-            personCount: e.personCount,
-            approvalStatus: e.approvalStatus,
-            paymentStatus: e.paymentStatus,
-            createdAt: e.createdAt,
-            restaurant: clearRestaurantObjectID(e.restaurant),
-          })) as PopulatedReservationJSON[],
+          data: reservations.map((e) => clearPopulatedObjectID(e)),
         };
       }
     }
@@ -113,10 +117,14 @@ export async function createReservation(formState: unknown, formData: FormData) 
   return { success: false };
 }
 
-async function fetchReservation(id: string): Promise<ReservationJSON | null> {
+async function fetchReservation(id: string): Promise<PopulatedReservationJSON | null> {
   try {
     await dbConnect();
-    const reservation = clearReservationObjectID(await Reservation.findById(id).lean());
+    const reservation = clearPopulatedObjectID(
+      (await Reservation.findById(id)
+        .lean()
+        .populate("restaurant")) as unknown as PopulatedReservationDB
+    );
     return reservation;
   } catch (err) {
     console.error(err);
@@ -126,7 +134,7 @@ async function fetchReservation(id: string): Promise<ReservationJSON | null> {
 
 export async function getReservation(
   id: string
-): Promise<{ success: true; data: ReservationJSON } | { success: false }> {
+): Promise<{ success: true; data: PopulatedReservationJSON } | { success: false }> {
   const reservation = await fetchReservation(id);
   if (reservation) {
     return { success: true, data: reservation };
@@ -135,13 +143,11 @@ export async function getReservation(
 }
 
 export async function editReservation(
-  formState: unknown,
-  formData: FormData
-): Promise<{ success: true; data: ReservationJSON } | { success: false }> {
+  reservationID: string,
+  approvalStatus: "pending" | "canceled" | "approved" | "rejected"
+): Promise<{ success: true; data: PopulatedReservationJSON } | { success: false }> {
   try {
     const user = (await auth())?.user;
-    const reservationID = formData.get("reservationID") as string | null;
-    const approvalStatus = formData.get("approvalStatus") as string | null;
     if (!user || !reservationID || !approvalStatus) return { success: false };
     const reservation = await fetchReservation(reservationID);
     if (
@@ -151,19 +157,17 @@ export async function editReservation(
     ) {
       return { success: false };
     }
-    const restaurant = await getRestaurant(reservation.restaurant);
     if (
-      restaurant.success
-      && (reservation.user == user.id
-        || restaurant.data.owner == user.id
-        || restaurant.data.admin.includes(user.id))
+      reservation.user == user.id
+      || reservation.restaurant.owner == user.id
+      || reservation.restaurant.admin.includes(user.id)
     ) {
-      const updatedReservation = clearReservationObjectID(
-        await Reservation.findByIdAndUpdate(
+      const updatedReservation = clearPopulatedObjectID(
+        (await Reservation.findByIdAndUpdate(
           reservationID,
           { approvalStatus },
           { new: true, runValidators: true }
-        )
+        ).populate("restaurant")) as unknown as PopulatedReservationDB
       );
       if (updatedReservation) {
         return { success: true, data: updatedReservation };

@@ -8,7 +8,7 @@ export default async function Profile() {
   }
 
   return (
-    <main className="p-4">
+    <main>
       <h1>Profile</h1>
       <div className="flex flex-col gap-4 py-4">
         <span>Name: {session.user.name}</span>

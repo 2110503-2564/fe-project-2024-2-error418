@@ -4,12 +4,14 @@ import { z } from "zod";
 import { auth } from "@/auth";
 import dbConnect from "./dbConnect";
 import User from "./models/User";
-import Restaurant, { RestaurantJSON } from "./models/Restaurant";
+import Restaurant, { RestaurantDB, RestaurantJSON } from "./models/Restaurant";
 import Reservation from "./models/Reservation";
 import { clearRestaurantObjectID } from "./models/utils";
+import { RootFilterQuery } from "mongoose";
 
 export async function getRestaurants(
-  options: { select?: string; sort?: string; page?: string; limit?: string } = {}
+  options: { select?: string; sort?: string; page?: string; limit?: string } = {},
+  filter: RootFilterQuery<RestaurantDB> = {}
 ): Promise<
   | {
       success: true;
@@ -21,7 +23,7 @@ export async function getRestaurants(
 > {
   await dbConnect();
   try {
-    let query = Restaurant.find().lean();
+    let query = Restaurant.find(filter).lean();
     if (options.select) {
       const fields = options.select.split(",").join(" ");
       query = query.select(fields);
@@ -36,7 +38,7 @@ export async function getRestaurants(
     const limit = parseInt(options.limit || "25", 10) || 25;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-    const totalIndex = await Restaurant.countDocuments();
+    const totalIndex = await Restaurant.countDocuments(filter);
     query = query.skip(startIndex).limit(limit);
     const pagination: { limit: number; prev?: number; next?: number } = {
       limit,
