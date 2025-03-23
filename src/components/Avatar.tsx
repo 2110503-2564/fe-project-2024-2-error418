@@ -12,6 +12,7 @@ import {
   ArrowRightStartOnRectangleIcon,
   UserCircleIcon,
   BuildingStorefrontIcon,
+  CalendarDaysIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "@/i18n/navigation";
 import { logoutUser } from "@/db/auth";
@@ -103,10 +104,19 @@ export default function AccountMenu({ session }: { session: Session | null }) {
             <li onClick={handleClose} key="myRestaurants">
               <Link
                 className="flex items-center gap-2 px-4 py-1.5 hover:bg-gray-100"
-                href="/profile/restaurants"
+                href="/dashboard/restaurants"
               >
                 <BuildingStorefrontIcon width={16} height={16} />
                 My Restaurants
+              </Link>
+            </li>,
+            <li onClick={handleClose} key="myReservations">
+              <Link
+                className="flex items-center gap-2 px-4 py-1.5 hover:bg-gray-100"
+                href="/dashboard/reservations"
+              >
+                <CalendarDaysIcon width={16} height={16} />
+                My Reservations
               </Link>
             </li>,
             <li onClick={handleClose} key="logout">
