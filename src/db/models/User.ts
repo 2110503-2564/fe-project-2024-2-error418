@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
-interface UserDB {
+export type UserDB = {
   name: string;
   phone: string;
   email: string;
@@ -11,7 +11,7 @@ interface UserDB {
   resetPasswordExpire?: Date;
   restaurantOwner: mongoose.Types.ObjectId[];
   restaurantAdmin: mongoose.Types.ObjectId[];
-}
+};
 
 export type UserJSON = {
   name: string;
