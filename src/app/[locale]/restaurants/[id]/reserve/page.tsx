@@ -11,7 +11,6 @@ import dayjs from "dayjs";
 
 export default function CreateReservation() {
   const params = useParams<{ id: string }>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, action, pending] = useActionState(createReservation, undefined);
   useEffect(() => {
     console.log(state);

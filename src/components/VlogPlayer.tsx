@@ -1,10 +1,17 @@
-'use client'
-import { useRef, useEffect} from "react"
+"use client";
+import { useRef } from "react";
 
-export function VlogPlayer( {vdoSrc} : {vdoSrc:string}) {
-    const vdoRef = useRef<HTMLVideoElement>(null)
+export function VlogPlayer({ vdoSrc }: { vdoSrc: string }) {
+  const vdoRef = useRef<HTMLVideoElement>(null);
 
-    return (
-        <video className="w-full absolute fixed object-cover" src={vdoSrc} ref={vdoRef} autoPlay loop muted/>
-    )
+  return (
+    <video
+      className="absolute fixed w-full object-cover"
+      src={vdoSrc}
+      ref={vdoRef}
+      autoPlay
+      loop
+      muted
+    />
+  );
 }
