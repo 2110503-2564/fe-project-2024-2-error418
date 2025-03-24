@@ -12,25 +12,42 @@ import {
 } from "@mui/material";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { loginUser } from "@/db/auth";
+import { useSearchParams } from "next/navigation";
 
 export default function Register() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, action, pending] = useActionState(loginUser, undefined);
   const [showPassword, setShowPassword] = useState(false);
+  const searchParams = useSearchParams();
+  const returnTo = searchParams.get("returnTo") || "/";
+
+  const enhancedAction = async (formData: FormData) => {
+    formData.append("callbackUrl", window.location.href);
+    return action(formData);
+  };
 
   return (
     <main className="p-4">
-      <div className="place-self-center bg-[var(--primary)] m-[20px] p-[20px] w-fit rounded border border-[#927d2b]">
+      <div className="m-[20px] w-fit place-self-center rounded border border-[#927d2b] bg-[var(--primary)] p-[20px]">
         <h1 className="text-center text-2xl font-bold">Login</h1>
-        <form className="flex flex-col items-center gap-4 py-4" action={action}>
-          <TextField id="login-email" name="email" label="Email" variant="outlined" className="bg-[var(--inputbg)] rounded w-full"/>
+        <form className="flex flex-col items-center gap-4 py-4" action={enhancedAction}>
+          <input type="hidden" name="returnTo" value={returnTo} />
+          <TextField
+            id="login-email"
+            name="email"
+            label="Email"
+            variant="outlined"
+            className="w-full rounded bg-[var(--inputbg)]"
+            required
+          />
           <FormControl variant="outlined">
             <InputLabel htmlFor="login-password">Password</InputLabel>
             <OutlinedInput
               id="login-password"
               name="password"
               type={showPassword ? "text" : "password"}
-              className="bg-[var(--inputbg)] w-full"
+              className="w-full bg-[var(--inputbg)]"
+              required
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton

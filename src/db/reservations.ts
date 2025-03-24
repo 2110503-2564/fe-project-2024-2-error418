@@ -95,16 +95,20 @@ export async function createReservation(formState: unknown, formData: FormData) 
     });
     if (!validatedFields.success) return { success: false, errors: validatedFields.error };
     const user = (await auth())?.user;
-    if (!user) return { success: false };
+    if (!user) return { success: false, message: "unauthorized" };
 
-    const existedAppointments = await Reservation.countDocuments({
-      user: user.id,
-      reserveDate: { $gt: new Date() },
-    });
-    const restaurant = await Restaurant.findById(validatedFields.data.restaurant);
+    const [existedAppointments, restaurant] = await Promise.all([
+      Reservation.countDocuments({
+        user: user.id,
+        reserveDate: { $gt: new Date() },
+        approvalStatus: { $in: ["pending", "approved"] },
+      }),
+      Restaurant.findById(validatedFields.data.restaurant),
+    ]);
+
     if (restaurant) {
       if (existedAppointments >= 3 && restaurant.owner.toString() != user.id) {
-        return { success: false };
+        return { success: false, message: "reservations limit reached" };
       }
       const reservation = clearReservationObjectID(
         await Reservation.insertOne({ ...validatedFields.data, user: user.id })
@@ -114,7 +118,7 @@ export async function createReservation(formState: unknown, formData: FormData) 
   } catch (err) {
     console.error(err);
   }
-  return { success: false };
+  return { success: false, message: "error occured" };
 }
 
 async function fetchReservation(id: string): Promise<PopulatedReservationJSON | null> {

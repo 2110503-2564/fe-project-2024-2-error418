@@ -18,7 +18,7 @@ export default async function Profile() {
 
   const session = await auth();
   if (!session) {
-    redirect("/login");
+    redirect(`/login?returnTo=${encodeURIComponent("/profile")}`);
   }
 
   return (

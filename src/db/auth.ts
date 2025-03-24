@@ -52,10 +52,24 @@ export async function registerUser(formState: unknown, formData: FormData) {
 
 export async function loginUser(formState: unknown, formData: FormData) {
   try {
-    await signIn("credentials", formData);
+    const searchParams = new URL(formData.get("callbackUrl")?.toString() || "", "http://localhost")
+      .searchParams;
+    const returnTo = searchParams.get("returnTo") || "/";
+    await signIn("credentials", {
+      ...Object.fromEntries(formData),
+      redirect: false, // Prevent next-auth from handling the redirect
+    });
+    return redirect(returnTo);
   } catch (error) {
     if (error instanceof AuthError) {
-      return redirect(`/login?error=${error.type}`);
+      const searchParams = new URL(
+        formData.get("callbackUrl")?.toString() || "",
+        "http://localhost"
+      ).searchParams;
+      const returnTo = searchParams.get("returnTo") || "";
+      const returnToParam = returnTo ? `&returnTo=${encodeURIComponent(returnTo)}` : "";
+
+      return redirect(`/login?error=${error.type}${returnToParam}`);
     }
     throw error;
   }

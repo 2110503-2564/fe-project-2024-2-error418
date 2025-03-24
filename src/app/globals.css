@@ -8,8 +8,14 @@
   --inputbg: #ffffff;
   --cardbg: #ffffff;
   --cardhoverbg: #e0e0e0;
-  --cardborder: #ffffff00; 
+  --cardborder: #ffffff00;
   --shadow: #c0c0c0;
+  --text-primary: #333;
+  --text-secondary: #777;
+  --bg-primary: #fff;
+  --bg-secondary: #f9f9f9;
+  --accent-color: #fee685;
+  --border-color: #ddd;
 }
 
 .theme-dark {
@@ -19,8 +25,14 @@
   --inputbg: #ffffff;
   --cardbg: #101010;
   --cardhoverbg: #2a2a2a;
-  --cardborder: #2d2d2d; 
+  --cardborder: #2d2d2d;
   --shadow: #2a2a2a;
+  --text-primary: #eee;
+  --text-secondary: #bbb;
+  --bg-primary: #121212;
+  --bg-secondary: #222;
+  --accent-color: #927d2b;
+  --border-color: #444;
 }
 
 body {
