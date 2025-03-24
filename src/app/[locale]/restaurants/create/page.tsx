@@ -19,6 +19,16 @@ export default function CreateRestaurant() {
             name={e}
             label={e.charAt(0).toUpperCase() + e.slice(1)}
             variant="outlined"
+            InputLabelProps={{ style: { color: "var(--text-primary)" } }}
+            InputProps={{ style: { color: "var(--text-primary)" } }}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "var(--border-color)" },
+                "&:hover fieldset": { borderColor: "var(--border-color)" },
+                "&.Mui-focused fieldset": { borderColor: "var(--accent-color)" },
+              },
+            }}
+            className="bg-bg-secondary w-100 rounded"
           />
         ))}
         <Button variant="contained" disabled={pending} type="submit">

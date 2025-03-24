@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 export default async function ReservationDashboard() {
   const user = (await auth())?.user;
   if (!user) {
-    redirect("/login");
+    redirect(`/login?returnTo=${encodeURIComponent("/dashboard/reservations")}`);
   }
 
   const [approvalStatus, userTopRestaurant] = await Promise.all([
@@ -16,9 +16,9 @@ export default async function ReservationDashboard() {
   ]);
   return (
     <main>
-      <h1>Reservation Dashboard</h1>
-      <section>
-        <h2 className="text-center text-xl font-bold">Past Approval Status</h2>
+      <section className="mb-8 rounded-lg p-6 shadow-xl outline-2">
+        <h1>Reservation Dashboard</h1>
+        <h2 className="mb-4 text-center text-xl font-bold text-yellow-600">Past Approval Status</h2>
         {approvalStatus.success ?
           approvalStatus.data ?
             <div className="mx-auto flex w-fit flex-col gap-2 py-2">
@@ -33,7 +33,7 @@ export default async function ReservationDashboard() {
       </section>
 
       <section>
-        <h2 className="text-center text-xl font-bold">Top Restaurant</h2>
+        <h2 className="mb-4 text-center text-xl font-bold">Top Restaurant</h2>
         {userTopRestaurant.success ?
           <ul className="grid grid-cols-[repeat(auto-fit,minmax(16.5rem,1fr))] justify-items-center gap-8 py-4">
             {userTopRestaurant.data.map((e) => (

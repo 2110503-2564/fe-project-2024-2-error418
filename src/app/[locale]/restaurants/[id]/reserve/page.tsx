@@ -11,7 +11,6 @@ import dayjs from "dayjs";
 
 export default function CreateReservation() {
   const params = useParams<{ id: string }>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, action, pending] = useActionState(createReservation, undefined);
   useEffect(() => {
     console.log(state);
@@ -39,7 +38,21 @@ export default function CreateReservation() {
           hidden
         />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateTimePicker label="Reserve time" value={date} onChange={(val) => setDate(val)} />
+          <DateTimePicker
+            label="Reserve time"
+            value={date}
+            onChange={(val) => setDate(val)}
+            sx={{
+              "& .MuiInputBase-input": { color: "var(--text-primary)" },
+              "& .MuiInputLabel-root": { color: "var(--text-secondary)" },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "var(--border-color)" },
+                "&:hover fieldset": { borderColor: "var(--border-color)" },
+                "&.Mui-focused fieldset": { borderColor: "var(--accent-color)" },
+              },
+            }}
+            className="bg-bg-secondary w-55 rounded"
+          />
         </LocalizationProvider>
 
         <TextField
@@ -48,6 +61,16 @@ export default function CreateReservation() {
           label="Person Count"
           variant="outlined"
           type="number"
+          InputLabelProps={{ style: { color: "var(--text-secondary)" } }}
+          InputProps={{ style: { color: "var(--text-primary)" } }}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "var(--border-color)" },
+              "&:hover fieldset": { borderColor: "var(--border-color)" },
+              "&.Mui-focused fieldset": { borderColor: "var(--accent-color)" },
+            },
+          }}
+          className="bg-bg-secondary w-55 rounded"
         />
         <Button variant="contained" disabled={pending} type="submit">
           Submit
