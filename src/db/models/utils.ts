@@ -1,5 +1,21 @@
 import { ReservationDB, ReservationJSON } from "./Reservation";
 import { RestaurantDB, RestaurantJSON } from "./Restaurant";
+import { UserDB, UserJSON } from "./User";
+
+export function clearUserObjectID(user: UserDB | null): UserJSON | null {
+  if (!user) return user;
+  return {
+    name: user.name,
+    phone: user.phone,
+    email: user.email,
+    password: user.password,
+    createdAt: user.createdAt,
+    resetPasswordToken: user.resetPasswordToken,
+    resetPasswordExpire: user.resetPasswordExpire,
+    restaurantOwner: user.restaurantOwner.map((e) => e.toString()),
+    restaurantAdmin: user.restaurantAdmin.map((e) => e.toString()),
+  };
+}
 
 export function clearRestaurantObjectID(restaurant: RestaurantDB | null): RestaurantJSON | null {
   if (!restaurant) return restaurant;

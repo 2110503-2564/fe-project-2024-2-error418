@@ -8,6 +8,7 @@ import Restaurant, { RestaurantDB, RestaurantJSON } from "./models/Restaurant";
 import Reservation from "./models/Reservation";
 import { clearRestaurantObjectID } from "./models/utils";
 import { RootFilterQuery } from "mongoose";
+import mongoose from "mongoose";
 
 export async function getRestaurants(
   options: { select?: string; sort?: string; page?: string; limit?: string } = {},
@@ -173,6 +174,76 @@ export async function deleteRestaurant(id: string) {
         Restaurant.findByIdAndDelete(id),
       ]);
       return { success: true };
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  return { success: false };
+}
+
+export async function addRestaurantAdmin(formState: unknown, formData: FormData) {
+  const user = (await auth())?.user;
+  const restaurantID = formData.get("restaurantID") as string | null;
+  const adminEmail = formData.get("email") as string | null;
+  if (!user || !restaurantID || !adminEmail) return { success: false };
+
+  await dbConnect();
+  const [session, admin, restaurant] = await Promise.all([
+    auth(),
+    User.findOne({ email: adminEmail }),
+    Restaurant.findById(restaurantID),
+  ]);
+  if (!session || !admin || !restaurant || session.user.id != restaurant.owner.toString()) {
+    return { success: false };
+  }
+  const updatedRestaurant = clearRestaurantObjectID(
+    await Restaurant.findByIdAndUpdate(
+      restaurantID,
+      { $addToSet: { admin: admin.id } },
+      { new: true, runValidators: true }
+    )
+  );
+  if (updatedRestaurant) {
+    await admin.updateOne({ $addToSet: { restaurantAdmin: restaurantID } });
+    return { success: true, data: updatedRestaurant };
+  }
+  return { success: false };
+}
+
+type PopulatedRestaurantDB = Omit<RestaurantDB, "admin"> & {
+  admin: { _id: mongoose.Types.ObjectId; name: string; email: string }[];
+};
+export type PopulatedRestaurantJSON = Omit<RestaurantJSON, "admin"> & {
+  admin: { id: string; name: string; email: string }[];
+};
+
+function clearPopulatedObjectID(e: PopulatedRestaurantDB): PopulatedRestaurantJSON {
+  return {
+    id: e._id.toString(),
+    name: e.name,
+    address: e.address,
+    district: e.district,
+    province: e.province,
+    postalcode: e.postalcode,
+    region: e.region,
+    phone: e.phone,
+    createdAt: e.createdAt,
+    owner: e.owner.toString(),
+    admin: e.admin.map((e) => ({ id: e._id.toString(), name: e.name, email: e.email })),
+  };
+}
+
+export async function getPopulatedRestaurant(
+  restaurantID: string
+): Promise<{ success: true; data: PopulatedRestaurantJSON } | { success: false }> {
+  await dbConnect();
+  try {
+    const restaurant = (await Restaurant.findById(restaurantID).populate({
+      path: "admin",
+      select: ["name", "email"],
+    })) as unknown as PopulatedRestaurantDB;
+    if (restaurant) {
+      return { success: true, data: clearPopulatedObjectID(restaurant) };
     }
   } catch (err) {
     console.error(err);

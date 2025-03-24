@@ -1,11 +1,14 @@
 "use client";
 
-import { RestaurantJSON } from "@/db/models/Restaurant";
-import { editRestaurant } from "@/db/restaurants";
+import { editRestaurant, PopulatedRestaurantJSON } from "@/db/restaurants";
 import { Button, TextField } from "@mui/material";
 import { useActionState } from "react";
 
-export default function EditRestaurantForm({ restaurant }: { restaurant: RestaurantJSON }) {
+export default function EditRestaurantForm({
+  restaurant,
+}: {
+  restaurant: PopulatedRestaurantJSON;
+}) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, action, pending] = useActionState(editRestaurant, undefined);
 

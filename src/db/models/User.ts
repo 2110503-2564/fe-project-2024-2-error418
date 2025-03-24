@@ -13,6 +13,18 @@ interface UserDB {
   restaurantAdmin: mongoose.Types.ObjectId[];
 }
 
+export type UserJSON = {
+  name: string;
+  phone: string;
+  email: string;
+  password: string;
+  createdAt: Date;
+  resetPasswordToken?: string;
+  resetPasswordExpire?: Date;
+  restaurantOwner: string[];
+  restaurantAdmin: string[];
+};
+
 const UserSchema = new mongoose.Schema<UserDB>({
   name: { type: String, required: [true, "Please add a name"] },
   phone: { type: String, required: [true, "Please add a phone number"] },
