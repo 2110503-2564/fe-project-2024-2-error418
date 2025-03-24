@@ -19,7 +19,7 @@ export default function TopNav({ session }: { session: Session | null }) {
       <ul className="flex items-center gap-4">
         {links.map(({ href, name }) => (
           <li key={name}>
-            <Link href={href}>{name}</Link>
+            <Link href={href} className="text-[var(--foreground)] hover:text-gray-400">{name}</Link>
           </li>
         ))}
       </ul>

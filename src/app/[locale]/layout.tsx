@@ -9,6 +9,7 @@ import { getTheme } from "@/libs/theme";
 import ThemeProvider from "@/provider/ThemeProvider";
 import TopNav from "@/components/TopNav";
 import { auth } from "@/auth";
+import { VlogPlayer } from "@/components/VlogPlayer";
 
 export async function generateMetadata(): Promise<Metadata> {
   const text = await getTranslations("Metadata");

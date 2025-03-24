@@ -18,7 +18,7 @@ export default async function Reservations() {
   }
   return (
     <main>
-      <h1>My Reservations</h1>
+      <h1 className="pt-4">My Reservations</h1>
       <ul className="grid grid-cols-[repeat(auto-fit,minmax(16.5rem,1fr))] justify-items-center gap-8 py-4">
         {reservations.data.map((e) => (
           <li key={e.id}>
@@ -32,7 +32,7 @@ export default async function Reservations() {
 
 function Card({ restaurant, reserveDate, approvalStatus, id }: PopulatedReservationJSON) {
   return (
-    <div className="h-[22rem] w-[16.5rem] rounded-lg bg-white p-1 shadow-lg hover:bg-neutral-200 hover:shadow-2xl">
+    <div className="h-[22rem] w-[16.5rem] rounded-lg bg-[var(--cardbg)] p-1 shadow-lg border border-[var(--cardborder)] hover:bg-[var(--cardhoverbg)] hover:shadow-2xl hover:shadow-(color:--shadow)">
       <Link href={`/reservations/${id}`}>
         <div className="h-[50%]">
           <Image
@@ -46,12 +46,18 @@ function Card({ restaurant, reserveDate, approvalStatus, id }: PopulatedReservat
           />
         </div>
       </Link>
-      <div className="flex h-[35%] flex-col overflow-auto">
+      <div className="flex h-[35%] flex-col overflow-auto ml-3">
         <h2 className="pt-4 pb-2 text-[1rem] font-bold">{restaurant.name}</h2>
         <span>{reserveDate.toLocaleString()}</span>
-        <span>{approvalStatus}</span>
+        {
+          (approvalStatus == "approved")?
+          <span className="mt-2 rounded-full bg-green-600 w-[100px] h-[30px] pt-[2px] text-center">{approvalStatus}</span> :
+            (approvalStatus == "pending")? 
+            <span className="mt-2 rounded-full bg-yellow-600 w-[100px] h-[30px] pt-[2px] text-center">{approvalStatus}</span> 
+            : <span className="mt-2 rounded-full bg-red-600 w-[100px] h-[30px] pt-[2px] text-center">{approvalStatus}</span>
+        }
       </div>
-      <div className="z-10 flex h-[15%] flex-col overflow-auto">
+      <div className="z-10 flex h-[15%] flex-col overflow-auto ml-3 mt-1">
         {(approvalStatus == "pending" || approvalStatus == "approved") && (
           <form
             action={async () => {
