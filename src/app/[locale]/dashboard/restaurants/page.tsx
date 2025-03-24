@@ -14,7 +14,7 @@ export default async function MyRestaurants() {
 
   return (
     <main>
-      <h1>My Restaurants</h1>
+      <h1 className="pt-4">My Restaurants</h1>
       <MyRestaurantSearch restaurants={restaurants.data} />
     </main>
   );

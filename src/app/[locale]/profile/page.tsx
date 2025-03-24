@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { getUserData } from "@/db/auth";
+import { getUserData, logoutUser } from "@/db/auth";
 import { Avatar } from "@mui/material";
 import { redirect } from "next/navigation";
 
@@ -25,17 +25,33 @@ export default async function Profile() {
 
   return (
     <main>
-      <h1>Profile</h1>
+      <h1 className="pt-4">Profile</h1>
       {user.success ?
-        <div>
-          <Avatar sx={{ width: 32, height: 32, bgcolor: stringToColor(user.data.name) }}>
-            {user.data.name.charAt(0).toUpperCase()}
+        <div className="ml-auto mr-auto mt-10 text-center h-[700px] w-[650px] rounded rounded-xl bg-[var(--cardbg)] border border-[var(--cardborder)] p-1 shadow-xl shadow-(color:--shadow)">
+          <Avatar className="mt-4 ml-auto mr-auto" sx={{ width: 150, height: 150, bgcolor: stringToColor(user.data.name) }}>
+            <div className="text-8xl">
+              {user.data.name.charAt(0).toUpperCase()}
+            </div>
           </Avatar>
           <div className="flex flex-col gap-4 py-4">
-            <span>Name: {user.data.name}</span>
-            <span>phone: {user.data.phone}</span>
-            <span>email: {user.data.email}</span>
+            <span className="text-5xl">{user.data.name}</span>
+            <div className="flex flex-col py-4 mx-[100px] text-left">
+              <span className="text-[var(--text-secondary)] text-sm">Phone Number:</span>
+              <span className="bg-[var(--bg-secondary)] h-[50px] rounded rounded-2xl pt-[11px] pl-[15px] text-xl">{user.data.phone}</span>
+              <span className="text-[var(--text-secondary)] text-sm mt-[40px]">Email Address:</span>
+              <span className="bg-[var(--bg-secondary)] h-[50px] rounded rounded-2xl pt-[11px] pl-[15px] text-xl">{user.data.email}</span>
+            </div>
           </div>
+
+          <form action={logoutUser}>
+                <button
+                  className="w-fit cursor-pointer items-center mt-[150px] gap-2 text-[var(--text-secondary)]"
+                  type="submit"
+                  title="Logout"
+                >
+                  Logout
+                </button>
+              </form>
         </div>
       : <span>Cannot fetch User</span>}
     </main>
