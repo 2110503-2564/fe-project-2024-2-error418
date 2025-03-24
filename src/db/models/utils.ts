@@ -5,6 +5,7 @@ import { UserDB, UserJSON } from "./User";
 export function clearUserObjectID(user: UserDB | null): UserJSON | null {
   if (!user) return user;
   return {
+    id: user._id.toString(),
     name: user.name,
     phone: user.phone,
     email: user.email,

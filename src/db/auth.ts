@@ -4,9 +4,12 @@ import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import User, { UserDB } from "./models/User";
+import User, { UserDB, UserJSON } from "./models/User";
 import dbConnect from "./dbConnect";
 import { signIn, signOut } from "@/auth";
+import { RootFilterQuery } from "mongoose";
+import { QueryOptions } from "mongoose";
+import { clearUserObjectID } from "./models/utils";
 
 export async function authenticateUser(email: string, password: string) {
   await dbConnect();
@@ -87,6 +90,26 @@ export async function getUserData(
     const result = await User.findById(id);
     if (result) {
       return { success: true, data: result };
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  return { success: false };
+}
+
+export async function getUserList(
+  filter: RootFilterQuery<UserDB> = {},
+  options: QueryOptions<UserDB> = {}
+): Promise<{ success: true; count: number; data: UserJSON[] } | { success: false }> {
+  await dbConnect();
+  try {
+    const users = await User.find(filter, undefined, options).lean();
+    if (users) {
+      return {
+        success: true,
+        count: users.length,
+        data: users.map((e) => clearUserObjectID(e) as UserJSON),
+      };
     }
   } catch (err) {
     console.error(err);

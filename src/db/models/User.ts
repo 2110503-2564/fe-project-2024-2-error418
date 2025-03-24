@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 export type UserDB = {
+  _id: mongoose.Types.ObjectId;
   name: string;
   phone: string;
   email: string;
@@ -14,6 +15,7 @@ export type UserDB = {
 };
 
 export type UserJSON = {
+  id: string;
   name: string;
   phone: string;
   email: string;

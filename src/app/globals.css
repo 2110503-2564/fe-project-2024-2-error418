@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 :root,
 .theme-light {
   --background: #f0f0f0;
