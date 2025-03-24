@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { getUserData, logoutUser } from "@/db/auth";
 import { Avatar } from "@mui/material";
+import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 export default async function Profile() {
@@ -23,9 +24,10 @@ export default async function Profile() {
   }
   const user = await getUserData(session.user.id);
 
+  const text = await getTranslations("Profile");
   return (
     <main>
-      <h1 className="pt-4">Profile</h1>
+      <h1 className="pt-4">{text("profile")}</h1>
       {user.success ?
         <div className="ml-auto mr-auto mt-10 text-center h-[700px] w-[650px] rounded rounded-xl bg-[var(--cardbg)] border border-[var(--cardborder)] p-1 shadow-xl shadow-(color:--shadow)">
           <Avatar className="mt-4 ml-auto mr-auto" sx={{ width: 150, height: 150, bgcolor: stringToColor(user.data.name) }}>
@@ -36,9 +38,9 @@ export default async function Profile() {
           <div className="flex flex-col gap-4 py-4">
             <span className="text-5xl">{user.data.name}</span>
             <div className="flex flex-col py-4 mx-[100px] text-left">
-              <span className="text-[var(--text-secondary)] text-sm">Phone Number:</span>
+              <span className="text-[var(--text-secondary)] text-sm">{text("phone")}:</span>
               <span className="bg-[var(--bg-secondary)] h-[50px] rounded rounded-2xl pt-[11px] pl-[15px] text-xl">{user.data.phone}</span>
-              <span className="text-[var(--text-secondary)] text-sm mt-[40px]">Email Address:</span>
+              <span className="text-[var(--text-secondary)] text-sm mt-[40px]">{text("email")}:</span>
               <span className="bg-[var(--bg-secondary)] h-[50px] rounded rounded-2xl pt-[11px] pl-[15px] text-xl">{user.data.email}</span>
             </div>
           </div>
@@ -47,9 +49,8 @@ export default async function Profile() {
                 <button
                   className="w-fit cursor-pointer items-center mt-[150px] gap-2 text-[var(--text-secondary)]"
                   type="submit"
-                  title="Logout"
-                >
-                  Logout
+                  >
+                  {text("logout")}
                 </button>
               </form>
         </div>

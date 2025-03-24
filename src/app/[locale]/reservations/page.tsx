@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { editReservation, getUserReservations } from "@/db/reservations";
 import ReservationSearch from "@/components/ReservationSearch";
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
 
 async function cancelReservation(id: string) {
   "use server";
@@ -20,9 +21,11 @@ export default async function Reservations() {
   if (!reservations.success) {
     return <main>Cannot fetch data</main>;
   }
+
+  const text = await getTranslations("Reservations");
   return (
     <main>
-      <h1 className="pt-4">My Reservations</h1>
+      <h1 className="pt-4">{text("title")}</h1>
       <ReservationSearch
         reservations={reservations.data}
         cancelReservation={cancelReservation}

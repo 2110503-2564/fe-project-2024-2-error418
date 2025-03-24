@@ -16,6 +16,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link } from "@/i18n/navigation";
 import { logoutUser } from "@/db/auth";
+import { useTranslations } from "next-intl";
 
 export default function AccountMenu({ session }: { session: Session | null }) {
   function stringToColor(string: string) {
@@ -35,9 +36,11 @@ export default function AccountMenu({ session }: { session: Session | null }) {
   const [open, setOpen] = useState<boolean>(false);
   const handleClick = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const text = useTranslations("TopNav")
   return (
     <div>
-      <Tooltip title="Account settings">
+      <Tooltip title={text("account-setting")}>
         <IconButton
           ref={anchorEl}
           onClick={handleClick}
@@ -98,7 +101,7 @@ export default function AccountMenu({ session }: { session: Session | null }) {
                 href="/profile"
               >
                 <UserCircleIcon width={16} height={16} />
-                Profile
+                {text("profile")}
               </Link>
             </li>,
             <li onClick={handleClose} key="myRestaurants">
@@ -107,7 +110,7 @@ export default function AccountMenu({ session }: { session: Session | null }) {
                 href="/dashboard/restaurants"
               >
                 <BuildingStorefrontIcon width={16} height={16} />
-                My Restaurants
+                {text("my-restaurant")}
               </Link>
             </li>,
             <li onClick={handleClose} key="myReservations">
@@ -116,7 +119,7 @@ export default function AccountMenu({ session }: { session: Session | null }) {
                 href="/dashboard/reservations"
               >
                 <CalendarDaysIcon width={16} height={16} />
-                My Reservations
+                {text("my-reservation")}
               </Link>
             </li>,
             <li onClick={handleClose} key="logout">
@@ -124,10 +127,10 @@ export default function AccountMenu({ session }: { session: Session | null }) {
                 <button
                   className="flex w-full cursor-pointer items-center gap-2 px-4 py-1.5 hover:bg-gray-100"
                   type="submit"
-                  title="Logout"
+                  title={text("logout")}
                 >
                   <ArrowRightStartOnRectangleIcon width={16} height={16} />
-                  Logout
+                  {text("logout")}
                 </button>
               </form>
             </li>,
@@ -139,13 +142,13 @@ export default function AccountMenu({ session }: { session: Session | null }) {
                 href="/register"
               >
                 <PencilSquareIcon width={16} height={16} />
-                Register
+                {text("register")}
               </Link>
             </li>,
             <li onClick={handleClose} key="login">
               <Link className="flex items-center gap-2 px-4 py-1.5 hover:bg-gray-100" href="/login">
                 <KeyIcon width={16} height={16} />
-                Login
+                {text("login")}
               </Link>
             </li>,
           ]

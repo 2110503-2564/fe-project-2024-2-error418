@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { auth } from "@/auth";
 import { getApprovalStatus, getFrequency } from "@/db/dashboard";
+import { getTranslations } from "next-intl/server";
 
 export default async function RestaurantDashboard({ params }: { params: Promise<{ id: string }> }) {
   const user = (await auth())?.user;
@@ -13,38 +14,77 @@ export default async function RestaurantDashboard({ params }: { params: Promise<
   const [approvalStatus, frequency] = await Promise.all([getApprovalStatus(id), getFrequency(id)]);
   console.log(approvalStatus);
 
+  const text = await getTranslations("RestaurantDashboard");
+  const statusText = await getTranslations("Status");
   return (
     <main>
       <section className="p-8">
         <div className="rounded-lg border-2 shadow-xl">
-          <h1>Restaurant Dashboard</h1>
+          <h1>{text("title")}</h1>
           <h2 className="mb-4 text-center text-xl font-bold text-yellow-600">
-            Past Approval Status
+            {text("detail")}
           </h2>
           {approvalStatus.success ?
             approvalStatus.data ?
-              <div className="mx-auto flex w-fit flex-col gap-2 py-2">
-                <span>Canceled: {approvalStatus.data.canceled || 0}</span>
-                <span>Pending: {approvalStatus.data.pending || 0}</span>
-                <span>Rejected: {approvalStatus.data.rejected || 0}</span>
-                <span>Approved: {approvalStatus.data.approved || 0}</span>
-                <span>Total: {approvalStatus.data.total || 0}</span>
+              <div className="mx-auto flex w-fit flex-col gap-2 py-2 items-center">
+                <div className="flex flex-row gap-10">
+                  <div className="font-bold flex flex-row">
+                    <div className="mr-[5px] h-[35px] w-[130px] pt-[6px] rounded-full bg-green-600 text-center">
+                      {statusText("approved")}
+                    </div>
+                    <div className="pt-[6px]">
+                      : {approvalStatus.data.approved || 0}
+                    </div>
+                  </div>
+                  <div className="font-bold flex flex-row">
+                    <div className="mr-[5px] h-[35px] w-[130px] pt-[6px] rounded-full bg-yellow-600 text-center">
+                      {statusText("pending")}
+                    </div>
+                    <div className="pt-[6px]">
+                      : {approvalStatus.data.pending || 0}
+                    </div>
+                  </div>
+                  <div className="font-bold flex flex-row">
+                    <div className="mr-[5px] h-[35px] w-[130px] pt-[6px] rounded-full bg-red-600 text-center">
+                      {statusText("rejected")}
+                    </div>
+                    <div className="pt-[6px]">
+                      : {approvalStatus.data.rejected || 0}
+                    </div>
+                  </div>
+                  <div className="font-bold flex flex-row">
+                    <div className="mr-[5px] h-[35px] w-[130px] pt-[6px] rounded-full bg-red-600 text-center">
+                    {statusText("canceled")}
+                    </div>
+                    <div className="pt-[6px]">
+                      : {approvalStatus.data.canceled || 0}
+                    </div>
+                  </div>
+                </div>
+              <div className="font-bold mt-5 mb-6 flex flex-row">
+                <div className="mr-[5px] h-[35px] w-[130px] pt-[6px] rounded-full bg-[var(--cardhoverbg)] text-center">
+                  {statusText("total")}
+                </div>
+                <div className="pt-[6px]">
+                  : {approvalStatus.data.total || 0}
+                </div>
               </div>
-            : <div className="text-center">No past Reservation for this restaurant</div>
+            </div>
+            : <div className="text-center">{text("notfound")}</div>
           : <span>Cannot fetch data</span>}
         </div>
       </section>
 
       <section className="rounded-lg bg-yellow-50 p-6 shadow-xl">
-        <h2 className="mb-4 text-center text-xl font-bold text-black">Reservation Frequency</h2>
+        <h2 className="mb-4 text-center text-xl font-bold text-black">{text("graph-title")}</h2>
         {frequency.success ?
           <BarChart
             height={600}
             dataset={frequency.data}
             xAxis={[{ scaleType: "band", dataKey: "k" }]}
-            series={[{ dataKey: "v", label: "Reservations", color: "#FCD34D" }]}
+            series={[{ dataKey: "v", label: text("dataName"), color: "#FCD34D" }]}
           />
-        : <span>No past Reservation for this restaurant</span>}
+        : <span>{text("notfound")}</span>}
       </section>
     </main>
   );

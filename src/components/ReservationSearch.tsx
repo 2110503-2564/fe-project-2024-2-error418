@@ -7,6 +7,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { PopulatedReservationJSON } from "@/db/reservations";
 import { Button } from "@mui/material";
+import { useTranslations } from "next-intl";
 
 interface ReservationsSearchProps {
   reservations: PopulatedReservationJSON[];
@@ -21,6 +22,10 @@ function Card({
   id,
   cancelReservation,
 }: PopulatedReservationJSON & { cancelReservation: (id: string) => Promise<void> }) {
+
+  const statusText = useTranslations("Status");
+  const btnText = useTranslations("Button");
+
   return (
     <div className="h-[22rem] w-[16.5rem] rounded-lg border border-[var(--cardborder)] bg-[var(--cardbg)] p-1 shadow-lg hover:bg-[var(--cardhoverbg)] hover:shadow-2xl hover:shadow-(color:--shadow)">
       <Link href={`/reservations/${id}`}>
@@ -40,15 +45,15 @@ function Card({
         <h2 className="pt-4 pb-2 text-[1rem] font-bold">{restaurant.name}</h2>
         <span>{reserveDate.toLocaleString()}</span>
         {approvalStatus == "approved" ?
-          <span className="mt-2 h-[30px] w-[100px] rounded-full bg-green-600 pt-[2px] text-center">
-            {approvalStatus}
+          <span className="mt-2 h-[30px] w-[100px] rounded-full bg-green-600 pt-[2px] text-center font-bold">
+            {statusText("approved")}
           </span>
         : approvalStatus == "pending" ?
-          <span className="mt-2 h-[30px] w-[100px] rounded-full bg-yellow-600 pt-[2px] text-center">
-            {approvalStatus}
+          <span className="mt-2 h-[30px] w-[100px] rounded-full bg-yellow-600 pt-[2px] text-center font-bold">
+            {statusText("pending")}
           </span>
-        : <span className="mt-2 h-[30px] w-[100px] rounded-full bg-red-600 pt-[2px] text-center">
-            {approvalStatus}
+        : <span className="mt-2 h-[30px] w-[100px] rounded-full bg-red-600 pt-[2px] text-center font-bold">
+            {approvalStatus == "canceled" ? statusText("canceled") : statusText("rejected")}
           </span>
         }
       </div>
@@ -56,7 +61,7 @@ function Card({
         {(approvalStatus == "pending" || approvalStatus == "approved") && (
           <form action={() => cancelReservation(id)}>
             <Button variant="contained" type="submit">
-              Cancel
+              {btnText("cancel")}
             </Button>
           </form>
         )}
@@ -76,12 +81,14 @@ export default function ReservationSearch({
     reservation.restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const text = useTranslations("Search");
+
   return (
     <>
       <div className="mx-auto mb-6 w-full max-w-md">
         <TextField
           fullWidth
-          placeholder="Search restaurants..."
+          placeholder={text("placeholder")}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           variant="outlined"
@@ -104,7 +111,7 @@ export default function ReservationSearch({
             </li>
           ))
         : <div className="col-span-full py-8 text-center">
-            No restaurants found matching &apos;{searchQuery}&apos;
+            {text("notfound")} &apos;{searchQuery}&apos;
           </div>
         }
       </ul>
