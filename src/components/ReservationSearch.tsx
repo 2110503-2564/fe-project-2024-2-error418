@@ -22,7 +22,7 @@ function Card({
   cancelReservation,
 }: PopulatedReservationJSON & { cancelReservation: (id: string) => Promise<void> }) {
   return (
-    <div className="h-[22rem] w-[16.5rem] rounded-lg bg-white p-1 shadow-lg hover:bg-neutral-200 hover:shadow-2xl">
+    <div className="h-[22rem] w-[16.5rem] rounded-lg border border-[var(--cardborder)] bg-[var(--cardbg)] p-1 shadow-lg hover:bg-[var(--cardhoverbg)] hover:shadow-2xl hover:shadow-(color:--shadow)">
       <Link href={`/reservations/${id}`}>
         <div className="h-[50%]">
           <Image
@@ -36,12 +36,23 @@ function Card({
           />
         </div>
       </Link>
-      <div className="flex h-[35%] flex-col overflow-auto">
+      <div className="ml-3 flex h-[35%] flex-col overflow-auto">
         <h2 className="pt-4 pb-2 text-[1rem] font-bold">{restaurant.name}</h2>
         <span>{reserveDate.toLocaleString()}</span>
-        <span>{approvalStatus}</span>
+        {approvalStatus == "approved" ?
+          <span className="mt-2 h-[30px] w-[100px] rounded-full bg-green-600 pt-[2px] text-center">
+            {approvalStatus}
+          </span>
+        : approvalStatus == "pending" ?
+          <span className="mt-2 h-[30px] w-[100px] rounded-full bg-yellow-600 pt-[2px] text-center">
+            {approvalStatus}
+          </span>
+        : <span className="mt-2 h-[30px] w-[100px] rounded-full bg-red-600 pt-[2px] text-center">
+            {approvalStatus}
+          </span>
+        }
       </div>
-      <div className="z-10 flex h-[15%] flex-col overflow-auto">
+      <div className="z-10 mt-1 ml-3 flex h-[15%] flex-col overflow-auto">
         {(approvalStatus == "pending" || approvalStatus == "approved") && (
           <form action={() => cancelReservation(id)}>
             <Button variant="contained" type="submit">
