@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { getUserData } from "@/db/auth";
 import { Avatar } from "@mui/material";
 import { redirect } from "next/navigation";
 
@@ -20,24 +21,23 @@ export default async function Profile() {
   if (!session) {
     redirect(`/login?returnTo=${encodeURIComponent("/profile")}`);
   }
+  const user = await getUserData(session.user.id);
 
   return (
     <main>
       <h1>Profile</h1>
-      <Avatar
-        sx={{
-          width: 32,
-          height: 32,
-          bgcolor: session ? stringToColor(session.user.name) : undefined,
-        }}
-      >
-        {session ? session.user.name.charAt(0).toUpperCase() : null}
-      </Avatar>
-      <div className="flex flex-col gap-4 py-4">
-        <span>Name: {session.user.name}</span>
-        <span>phone: {session.user.phone}</span>
-        <span>email: {session.user.email}</span>
-      </div>
+      {user.success ?
+        <div>
+          <Avatar sx={{ width: 32, height: 32, bgcolor: stringToColor(user.data.name) }}>
+            {user.data.name.charAt(0).toUpperCase()}
+          </Avatar>
+          <div className="flex flex-col gap-4 py-4">
+            <span>Name: {user.data.name}</span>
+            <span>phone: {user.data.phone}</span>
+            <span>email: {user.data.email}</span>
+          </div>
+        </div>
+      : <span>Cannot fetch User</span>}
     </main>
   );
 }
