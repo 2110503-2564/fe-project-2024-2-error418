@@ -7,6 +7,7 @@ import { useState } from "react";
 import { UserJSON } from "@/db/models/User";
 import { getUserList } from "@/db/auth";
 import { useDebouncedCallback } from "use-debounce";
+import { useTranslations } from "next-intl";
 
 export default function UserSearch({
   name,
@@ -44,6 +45,7 @@ export default function UserSearch({
     setOptions([]);
   };
 
+  const text = useTranslations("AddAdmin");
   return (
     <Autocomplete
       sx={{
@@ -79,7 +81,7 @@ export default function UserSearch({
         <TextField
           {...params}
           name={name}
-          label="Add Admin"
+          label={text("placeholder")}
           onChange={(e) => {
             if (email != e.currentTarget.value) {
               handleChange(e.currentTarget.value);
