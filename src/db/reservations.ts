@@ -6,7 +6,12 @@ import dbConnect from "./dbConnect";
 import { getRestaurant } from "./restaurants";
 import Restaurant, { RestaurantDB, RestaurantJSON } from "./models/Restaurant";
 import Reservation, { ReservationDB, ReservationJSON } from "./models/Reservation";
-import { clearReservationObjectID, clearRestaurantObjectID } from "./models/utils";
+import {
+  clearReservationObjectID,
+  clearRestaurantObjectID,
+  clearUserObjectID,
+} from "./models/utils";
+import { UserDB, UserJSON } from "./models/User";
 
 type PopulatedReservationDB = Omit<ReservationDB, "restaurant"> & { restaurant: RestaurantDB };
 export type PopulatedReservationJSON = Omit<ReservationJSON, "restaurant"> & {
@@ -23,6 +28,19 @@ function clearPopulatedObjectID(e: PopulatedReservationDB): PopulatedReservation
     paymentStatus: e.paymentStatus,
     createdAt: e.createdAt,
     restaurant: clearRestaurantObjectID(e.restaurant) as RestaurantJSON,
+  };
+}
+
+function clearUserPopulatedObjectID(e: UserPopulatedReservationDB): UserPopulatedReservationJSON {
+  return {
+    id: e._id.toString(),
+    reserveDate: e.reserveDate,
+    user: clearUserObjectID(e.user) as UserJSON,
+    personCount: e.personCount,
+    approvalStatus: e.approvalStatus,
+    paymentStatus: e.paymentStatus,
+    createdAt: e.createdAt,
+    restaurant: e.restaurant.toString(),
   };
 }
 
@@ -50,13 +68,16 @@ export async function getUserReservations(): Promise<
   return { success: false };
 }
 
+type UserPopulatedReservationDB = Omit<ReservationDB, "user"> & { user: UserDB };
+export type UserPopulatedReservationJSON = Omit<ReservationJSON, "user"> & { user: UserJSON };
+
 export async function getRestaurantReservations(
   restaurantID: string
 ): Promise<
   | {
       success: true;
       count: number;
-      data: { restaurant: RestaurantJSON; reservations: ReservationJSON[] };
+      data: { restaurant: RestaurantJSON; reservations: UserPopulatedReservationJSON[] };
     }
   | { success: false }
 > {
@@ -71,14 +92,17 @@ export async function getRestaurantReservations(
       if (restaurant.data.owner != user.id && !restaurant.data.admin.includes(user.id)) {
         return { success: false };
       }
-      const reservations = (await Reservation.find(queryOptions)).map((e) =>
-        clearReservationObjectID(e)
-      );
+      const reservations = (await Reservation.find(queryOptions).populate({
+        path: "user",
+      })) as unknown as UserPopulatedReservationDB[] | null;
       if (reservations) {
         return {
           success: true,
           count: reservations.length,
-          data: { restaurant: restaurant.data, reservations: reservations as ReservationJSON[] },
+          data: {
+            restaurant: restaurant.data,
+            reservations: reservations.map((e) => clearUserPopulatedObjectID(e)),
+          },
         };
       }
     }
