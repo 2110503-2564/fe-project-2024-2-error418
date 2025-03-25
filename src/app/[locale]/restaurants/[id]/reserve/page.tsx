@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState, useState } from "react";
-import { useParams } from "next/navigation";
+import { useActionState, useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { Button, TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -17,6 +17,13 @@ export default function CreateReservation() {
 
   const text = useTranslations("CreateReservation");
   const btnText = useTranslations("Button");
+
+  const router = useRouter();
+  useEffect(() => {
+    if (state?.success && params.id) {
+      router.push(`/restaurants/${params.id}/`);
+    }
+  }, [state, params.id, router]);
 
   return (
     <main className="p-4">
