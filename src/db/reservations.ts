@@ -231,14 +231,14 @@ export async function deleteReservation(id: string) {
     if (!user) return { success: false };
     const reservation = await fetchReservation(id);
     if (!reservation) return { success: false };
-    const restaurant = await getRestaurant(id);
+    const restaurant = await getRestaurant(reservation.restaurant.id);
     if (
       restaurant.success
       && (reservation.user == user.id
         || restaurant.data.owner == user.id
         || restaurant.data.admin.includes(user.id))
     ) {
-      await Reservation.deleteOne({ id });
+      await Reservation.findByIdAndDelete(id);
       return { success: true };
     }
   } catch (err) {

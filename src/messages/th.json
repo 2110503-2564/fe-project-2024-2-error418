@@ -14,25 +14,25 @@
   },
   "HomePage": { "title": "จองร้านอาหาร", "greeting": "สวัสดี {username}" },
   "Restaurants": { "title": "ร้านอาหาร" },
-  "RestaurantCard": { 
-    "address":"ที่อยู่", 
-    "district":"ตำบล", 
-    "postalcode": "รหัสไปรษณีย์", 
+  "RestaurantCard": {
+    "address": "ที่อยู่",
+    "district": "ตำบล",
+    "postalcode": "รหัสไปรษณีย์",
     "phone": "โทรศัพท์",
-    "province": "จังหวัด", 
-    "region": "ภูมิภาค", 
-    "reserve": "จอง", 
-    "edit": "แก้ไข", 
-    "name":"ชื่อ",
-    "dashboard":"สรุปร้านอาหาร", 
-    "add-admin":"เพื่มแอดมิน"
+    "province": "จังหวัด",
+    "region": "ภูมิภาค",
+    "reserve": "จอง",
+    "edit": "แก้ไข",
+    "name": "ชื่อ",
+    "dashboard": "สรุปร้านอาหาร",
+    "add-admin": "เพื่มแอดมิน"
   },
-  "RestaurantDashboard": { 
-    "title":"แผงสรุปร้านอาหาร", 
-    "detail":"ประวัติสถานะการอนุมัติ", 
-    "graph-title":"ความถี่การจอง", 
-    "dataName": "การจอง", 
-    "notfound":"ไม่พบการจองร้านอาหารนี้" 
+  "RestaurantDashboard": {
+    "title": "แผงสรุปร้านอาหาร",
+    "detail": "ประวัติสถานะการอนุมัติ",
+    "graph-title": "ความถี่การจอง",
+    "dataName": "การจอง",
+    "notfound": "ไม่พบการจองร้านอาหารนี้"
   },
   "Reservations": { "title": "รายการจอง" },
   "ReservationCard": { "reserved": "เวลาที่จอง", "person-count": "จำนวนคน" },
@@ -78,7 +78,8 @@
     "submit": "ส่ง",
     "management": "จัดการสถานะการจอง",
     "reject": "ปฏิเสธ",
-    "approve": "ยืนยัน"
+    "approve": "ยืนยัน",
+    "delete": "ลบ"
   },
   "Profile": {
     "profile": "โปรไฟล์",

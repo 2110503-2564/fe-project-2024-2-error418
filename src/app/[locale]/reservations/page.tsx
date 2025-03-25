@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { editReservation, getUserReservations } from "@/db/reservations";
+import { deleteReservation, editReservation, getUserReservations } from "@/db/reservations";
 import ReservationSearch from "@/components/ReservationSearch";
 import { revalidatePath } from "next/cache";
 import { getTranslations } from "next-intl/server";
@@ -8,6 +8,12 @@ import { getTranslations } from "next-intl/server";
 async function cancelReservation(id: string) {
   "use server";
   await editReservation(id, "canceled");
+  revalidatePath("/reservations");
+}
+
+async function deleteReservationAction(id: string) {
+  "use server";
+  await deleteReservation(id);
   revalidatePath("/reservations");
 }
 
@@ -29,6 +35,7 @@ export default async function Reservations() {
       <ReservationSearch
         reservations={reservations.data}
         cancelReservation={cancelReservation}
+        deleteReservation={deleteReservationAction}
       ></ReservationSearch>
     </main>
   );
