@@ -4,17 +4,25 @@ import { editRestaurant, PopulatedRestaurantJSON } from "@/db/restaurants";
 import { Button, TextField } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function EditRestaurantForm({
   restaurant,
 }: {
   restaurant: PopulatedRestaurantJSON;
 }) {
+  const router = useRouter();
   const btnText = useTranslations("Button");
   const text = useTranslations("RestaurantCard");
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, action, pending] = useActionState(editRestaurant, undefined);
+
+  useEffect(() => {
+    if (state?.success) {
+      router.push(`/restaurants/${restaurant.id}/`);
+    }
+  }, [state, restaurant.id, router]);
 
   const arr = ["name", "address", "district", "province", "postalcode", "region", "phone"] as const;
 
@@ -31,6 +39,7 @@ export default function EditRestaurantForm({
           defaultValue={Object(restaurant)[e]}
           InputLabelProps={{ style: { color: "var(--text-primary)" } }}
           InputProps={{ style: { color: "var(--text-primary)" } }}
+          required
           sx={{
             "& .MuiOutlinedInput-root": {
               "& fieldset": { borderColor: "var(--border-color)" },
