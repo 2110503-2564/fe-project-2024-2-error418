@@ -69,7 +69,7 @@ export default function RestaurantSearch({
             </li>
           ))
         : <div className="col-span-full py-8 text-center">
-            {text("notfound")} '{searchQuery}'
+            {text("notfound")} &apos;{searchQuery}&apos;
           </div>
         }
       </ul>
