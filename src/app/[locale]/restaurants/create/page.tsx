@@ -1,12 +1,20 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { Button, TextField } from "@mui/material";
 import { createRestaurant } from "@/db/restaurants";
+import { useRouter } from "next/navigation";
 
 export default function CreateRestaurant() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, action, pending] = useActionState(createRestaurant, undefined);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state?.success) {
+      router.push("/dashboard/restaurants");
+    }
+  }, [state, router]);
 
   return (
     <main className="p-4">
@@ -21,6 +29,7 @@ export default function CreateRestaurant() {
             variant="outlined"
             InputLabelProps={{ style: { color: "var(--text-primary)" } }}
             InputProps={{ style: { color: "var(--text-primary)" } }}
+            required
             sx={{
               "& .MuiOutlinedInput-root": {
                 "& fieldset": { borderColor: "var(--border-color)" },
