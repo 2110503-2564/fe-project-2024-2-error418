@@ -87,7 +87,7 @@ export default async function Restaurant({ params }: { params: Promise<{ id: str
                 </Button>
               )}
               {user && user.id == data.owner && (
-                <Button variant="outlined" href={`/restaurants/${data.id}/edit`}>
+                <Button variant="outlined" href={`/restaurants/${data.id}/admin`}>
                   {text("add-admin")}
                 </Button>
               )}

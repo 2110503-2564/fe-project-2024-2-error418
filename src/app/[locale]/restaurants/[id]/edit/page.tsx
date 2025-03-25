@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { auth } from "@/auth";
 import { getPopulatedRestaurant } from "@/db/restaurants";
+// import { getTranslations } from "next-intl/server";
 import EditRestaurantForm from "./form";
 
 export default async function Restaurant({ params }: { params: Promise<{ id: string }> }) {
   const user = (await auth())?.user;
   const { id } = await params;
   const popRestaurant = await getPopulatedRestaurant(id);
-
   if (!popRestaurant.success) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white">
@@ -16,6 +16,7 @@ export default async function Restaurant({ params }: { params: Promise<{ id: str
     );
   }
   const { data } = popRestaurant;
+  // const text = await getTranslations("RestaurantCard");
 
   if (!user || user.id != data.owner) {
     return <h1>You are not allowed to edit this restaurant</h1>;
