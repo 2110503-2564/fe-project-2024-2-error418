@@ -14,10 +14,7 @@ export default async function RestaurantDashboard({ params }: { params: Promise<
 
   const { id } = await params;
   const restaurant = await getRestaurant(id);
-  if (
-    restaurant.success
-    && (restaurant.data.owner != user.id || !restaurant.data.admin.includes(user.id))
-  ) {
+  if (restaurant.success && restaurant.data.owner != user.id) {
     return redirect(`/dashboard/restaurants/${id}/reservations`);
   }
   const [approvalStatus, frequency] = await Promise.all([getApprovalStatus(id), getFrequency(id)]);
