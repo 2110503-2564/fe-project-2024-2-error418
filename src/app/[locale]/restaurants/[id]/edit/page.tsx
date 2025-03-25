@@ -1,25 +1,21 @@
 import Image from "next/image";
 import { auth } from "@/auth";
-import { getPopulatedRestaurant, getRestaurant } from "@/db/restaurants";
+import { getPopulatedRestaurant } from "@/db/restaurants";
 // import { getTranslations } from "next-intl/server";
 import EditRestaurantForm from "./form";
 
 export default async function Restaurant({ params }: { params: Promise<{ id: string }> }) {
   const user = (await auth())?.user;
-
   const { id } = await params;
-  const restaurant = await getRestaurant(id);
   const popRestaurant = await getPopulatedRestaurant(id);
-
-  if (!restaurant.success || !popRestaurant.success) {
+  if (!popRestaurant.success) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white">
         <div className="text-gray-700">Cannot fetch data</div>
       </main>
     );
   }
-  const { data } = restaurant;
-
+  const { data } = popRestaurant;
   // const text = await getTranslations("RestaurantCard");
 
   if (!user || user.id != data.owner) {

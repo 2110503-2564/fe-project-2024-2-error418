@@ -17,25 +17,25 @@
   },
   "HomePage": { "title": "Restaurant Reservation", "greeting": "Hello {username}" },
   "Restaurants": { "title": "Restaurants" },
-  "RestaurantCard": { 
-    "address":"Address", 
-    "district":"District", 
-    "postalcode": "Postal Code", 
+  "RestaurantCard": {
+    "address": "Address",
+    "district": "District",
+    "postalcode": "Postal Code",
     "phone": "Tel",
-    "province": "Province", 
+    "province": "Province",
     "region": "Region",
-    "reserve": "Reserve", 
-    "edit": "Edit", 
-    "name":"Name",
-    "dashboard":"Restaurant Dashboard", 
-    "add-admin":"Add Admin"
+    "reserve": "Reserve",
+    "edit": "Edit",
+    "name": "Name",
+    "dashboard": "Restaurant Dashboard",
+    "add-admin": "Add Admin"
   },
-  "RestaurantDashboard": { 
-    "title":"Restaurant Dashboard", 
-    "detail":"Past Approval Status", 
-    "graph-title":"Reservation Frequency", 
-    "dataName": "Reservations", 
-    "notfound":"No past Reservation for this restaurant" 
+  "RestaurantDashboard": {
+    "title": "Restaurant Dashboard",
+    "detail": "Past Approval Status",
+    "graph-title": "Reservation Frequency",
+    "dataName": "Reservations",
+    "notfound": "No past Reservation for this restaurant"
   },
   "Reservations": { "title": "Reservations" },
   "ReservationCard": { "reserved": "Reserved On", "person-count": "Person Count" },
@@ -81,7 +81,8 @@
     "submit": "SUBMIT",
     "management": "Manage Reservation Status",
     "reject": "Reject",
-    "approve": "Approve"
+    "approve": "Approve",
+    "delete": "Delete"
   },
   "Profile": {
     "profile": "Profile",

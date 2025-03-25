@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { editReservation, getReservation } from "@/db/reservations";
+import { deleteReservation, editReservation, getReservation } from "@/db/reservations";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@mui/material";
 import { getTranslations } from "next-intl/server";
@@ -47,9 +47,13 @@ export default async function Reservation({ params }: { params: Promise<{ id: st
           <div className="flex flex-col items-start gap-4">
             <h1 className="text-3xl font-bold text-yellow-600">{data.restaurant.name}</h1>
             <div className="text-xl">
-              <span>{text("reserved")}: {reserveDate.toLocaleString()}</span>
+              <span>
+                {text("reserved")}: {reserveDate.toLocaleString()}
+              </span>
               <br />
-              <span>{text("person-count")}: {data.personCount}</span>
+              <span>
+                {text("person-count")}: {data.personCount}
+              </span>
             </div>
             <div className="mt-6 flex gap-4">
               {user && (
@@ -62,7 +66,7 @@ export default async function Reservation({ params }: { params: Promise<{ id: st
                   </Button>
                 </Link>
               )}
-              {(data.approvalStatus == "pending" || data.approvalStatus == "approved") && (
+              {data.approvalStatus == "pending" || data.approvalStatus == "approved" ?
                 <form
                   action={async () => {
                     "use server";
@@ -78,7 +82,22 @@ export default async function Reservation({ params }: { params: Promise<{ id: st
                     {btnText("cancel")}
                   </Button>
                 </form>
-              )}
+              : <form
+                  action={async () => {
+                    "use server";
+                    await deleteReservation(id);
+                    redirect("/reservations");
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    className="rounded bg-red-500 px-4 py-2 font-bold text-white shadow-md hover:bg-red-700"
+                    type="submit"
+                  >
+                    {btnText("delete")}
+                  </Button>
+                </form>
+              }
             </div>
           </div>
         </div>
