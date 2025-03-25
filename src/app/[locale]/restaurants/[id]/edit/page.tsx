@@ -1,7 +1,7 @@
 import { getPopulatedRestaurant } from "@/db/restaurants";
 import EditRestaurantForm from "./form";
-import AdminForm from "./AdminForm";
-import AdminList from "./AdminList";
+import AdminForm from "./adminForm";
+import AdminList from "./adminList";
 
 export default async function EditRestaurant({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
