@@ -5,13 +5,11 @@ import { Button, TextField } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useActionState } from "react";
 
-
 export default function EditRestaurantForm({
-  restaurant, userId
+  restaurant,
 }: {
-  restaurant: PopulatedRestaurantJSON, userId: string
+  restaurant: PopulatedRestaurantJSON;
 }) {
-
   const btnText = useTranslations("Button");
   const text = useTranslations("RestaurantCard");
 
