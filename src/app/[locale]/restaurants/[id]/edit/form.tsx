@@ -2,25 +2,33 @@
 
 import { editRestaurant, PopulatedRestaurantJSON } from "@/db/restaurants";
 import { Button, TextField } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { useActionState } from "react";
 
+
 export default function EditRestaurantForm({
-  restaurant,
+  restaurant, userId
 }: {
-  restaurant: PopulatedRestaurantJSON;
+  restaurant: PopulatedRestaurantJSON, userId: string
 }) {
+
+  const btnText = useTranslations("Button");
+  const text = useTranslations("RestaurantCard");
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, action, pending] = useActionState(editRestaurant, undefined);
+
+  const arr = ["name", "address", "district", "province", "postalcode", "region", "phone"] as const;
 
   return (
     <form className="flex flex-col items-center gap-4 py-4" action={action}>
       <input type="text" name="restaurantID" value={restaurant.id} readOnly hidden />
-      {["name", "address", "district", "province", "postalcode", "region", "phone"].map((e) => (
+      {arr.map((e) => (
         <TextField
           key={e}
           id={e}
           name={e}
-          label={e.charAt(0).toUpperCase() + e.slice(1)}
+          label={text(e)}
           variant="outlined"
           defaultValue={Object(restaurant)[e]}
           InputLabelProps={{ style: { color: "var(--text-primary)" } }}
@@ -36,7 +44,7 @@ export default function EditRestaurantForm({
         />
       ))}
       <Button variant="contained" disabled={pending} type="submit">
-        Submit
+        {btnText("submit")}
       </Button>
     </form>
   );

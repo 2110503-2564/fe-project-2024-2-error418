@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { auth } from "@/auth";
-import { getRestaurant } from "@/db/restaurants";
+import { getPopulatedRestaurant, getRestaurant } from "@/db/restaurants";
 import { Button } from "@mui/material";
 import { getTranslations } from "next-intl/server";
 
@@ -9,6 +9,7 @@ export default async function Restaurant({ params }: { params: Promise<{ id: str
   const user = (await auth())?.user;
   const { id } = await params;
   const restaurant = await getRestaurant(id);
+
   if (!restaurant.success) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white">
@@ -36,25 +37,33 @@ export default async function Restaurant({ params }: { params: Promise<{ id: str
             />
           </div>
           <div className="flex flex-col items-start gap-4">
-            <h1 className="text-3xl font-bold text-yellow-600">{data.name}</h1>
-            <div className="text-xl">
-              <span>{text("address")}: {data.address}</span>
-              <br />
-              <span>{text("district")}: {data.district}</span>
-              <br />
-              <span>{text("postal-code")}: {data.postalcode}</span>
-              <br />
-              <span>{text("tel")}: {data.phone}</span>
+            <div className="text-3xl font-bold text-yellow-600 flex gap-4">
+              {data.name}
+              {user && user.id == data.owner && (
+                <Button size="small" href={`/restaurants/${data.id}/edit`}>{text("edit")}</Button>
+              )}
             </div>
-            <div className="mt-6 flex gap-4">
+          
+            <div className="text-xl">
+              <div>{text("address")}: {data.address}</div>
+              <div className="mt-1">{text("district")}: {data.district}</div>
+              <div className="mt-1">{text("province")}: {data.province}</div>
+              <div className="mt-1">{text("postalcode")}: {data.postalcode}</div>
+              <div className="mt-1">{text("region")}: {data.region}</div>
+              <div className="mt-1">{text("phone")}: {data.phone}</div>
+            </div>
+            <div className="flex gap-4">
+              {user && user.id == data.owner && (
+                <Button variant="outlined" href={`/dashboard/restaurants/${data.id}`}>{text("dashboard")}</Button>
+              )}
+              {user && user.id == data.owner && (
+                <Button variant="outlined" href={`/restaurants/${data.id}/edit`}>{text("add-admin")}</Button>
+              )}
+            </div>
+            <div className="mt-6">
               {user && (
                 <Link href={`/restaurants/${data.id}/reserve`}>
                   <Button variant="contained">{text("reserve")}</Button>
-                </Link>
-              )}
-              {user && user.id == data.owner && (
-                <Link href={`/restaurants/${data.id}/edit`}>
-                  <Button variant="contained">{text("edit")}</Button>
                 </Link>
               )}
             </div>

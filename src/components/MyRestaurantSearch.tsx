@@ -68,7 +68,7 @@ export default function RestaurantSearch({
         {restaurantsOnPage.length > 0 ?
           restaurantsOnPage.map((e) => (
             <li key={e.id}>
-              <Link href={`/dashboard/restaurants/${e.id}`}>
+              <Link href={`/restaurants/${e.id}`}>
                 <RestaurantCard {...e}></RestaurantCard>
               </Link>
             </li>

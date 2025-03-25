@@ -17,13 +17,25 @@
   },
   "HomePage": { "title": "Restaurant Reservation", "greeting": "Hello {username}" },
   "Restaurants": { "title": "Restaurants" },
-  "RestaurantCard": {
-    "address": "Address",
-    "district": "District",
-    "postal-code": "Postal Code",
-    "tel": "Tel",
-    "reserve": "Reserve",
-    "edit": "Edit"
+  "RestaurantCard": { 
+    "address":"Address", 
+    "district":"District", 
+    "postalcode": "Postal Code", 
+    "phone": "Tel",
+    "province": "Province", 
+    "region": "Region",
+    "reserve": "Reserve", 
+    "edit": "Edit", 
+    "name":"Name",
+    "dashboard":"Restaurant Dashboard", 
+    "add-admin":"Add Admin"
+  },
+  "RestaurantDashboard": { 
+    "title":"Restaurant Dashboard", 
+    "detail":"Past Approval Status", 
+    "graph-title":"Reservation Frequency", 
+    "dataName": "Reservations", 
+    "notfound":"No past Reservation for this restaurant" 
   },
   "Reservations": { "title": "Reservations" },
   "ReservationCard": { "reserved": "Reserved On", "person-count": "Person Count" },
@@ -40,13 +52,6 @@
     "sub-title": "Top Restaurant",
     "total-reservation": "Total Reservation",
     "notfound": "You dont have any past Reservation"
-  },
-  "RestaurantDashboard": {
-    "title": "Restaurant Dashboard",
-    "detail": "Past Approval Status",
-    "graph-title": "Reservation Frequency",
-    "dataName": "Reservations",
-    "notfound": "No past Reservation for this restaurant"
   },
   "Signin": {
     "register": "Register",
