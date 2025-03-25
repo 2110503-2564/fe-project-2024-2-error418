@@ -20,6 +20,9 @@
   --bg-secondary: #f5f5f5;
   --accent-color: #fee685;
   --border-color: #ddd;
+  --bar-color: #fcd34d;
+  --section-bg: #fefce8;
+  --axis-color: #000000;
 }
 
 .theme-dark {
@@ -37,6 +40,9 @@
   --bg-secondary: #222;
   --accent-color: #927d2b;
   --border-color: #444;
+  --bar-color: #fbbf24;
+  --section-bg: #8c8058;
+  --axis-color: #ffffff;
 }
 
 body {

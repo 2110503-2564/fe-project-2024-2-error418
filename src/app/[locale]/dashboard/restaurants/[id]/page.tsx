@@ -76,16 +76,34 @@ export default async function RestaurantDashboard({ params }: { params: Promise<
         </div>
       </section>
 
-      <section className="rounded-lg bg-yellow-50 p-6 shadow-xl">
-        <h2 className="mb-4 text-center text-xl font-bold text-black">{text("graph-title")}</h2>
+      <section
+        className="rounded-lg p-6 shadow-xl"
+        style={{ backgroundColor: "var(--section-bg)" }}
+      >
+        <h2 className="mb-4 text-center text-xl font-bold text-[var(--text-primary)]">
+          {text("graph-title")}
+        </h2>
         {frequency.success ?
           <BarChart
             height={600}
             dataset={frequency.data}
-            xAxis={[{ scaleType: "band", dataKey: "k" }]}
-            series={[{ dataKey: "v", label: text("dataName"), color: "#FCD34D" }]}
+            xAxis={[
+              {
+                scaleType: "band",
+                dataKey: "k",
+                tickLabelStyle: { fill: "var(--axis-color)" }, // X-axis text color
+                stroke: "var(--axis-color)", // X-axis line color
+              },
+            ]}
+            yAxis={[
+              {
+                tickLabelStyle: { fill: "var(--axis-color)" }, // Y-axis text color
+                stroke: "var(--axis-color)", // Y-axis line color
+              },
+            ]}
+            series={[{ dataKey: "v", label: text("dataName"), color: "var(--bar-color)" }]}
           />
-        : <span>{text("notfound")}</span>}
+        : <span className="text-[var(--text-primary)]">{text("notfound")}</span>}
       </section>
     </main>
   );
