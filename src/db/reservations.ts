@@ -50,7 +50,16 @@ export async function getUserReservations(): Promise<
   return { success: false };
 }
 
-export async function getRestaurantReservations(restaurantID: string) {
+export async function getRestaurantReservations(
+  restaurantID: string
+): Promise<
+  | {
+      success: true;
+      count: number;
+      data: { restaurant: RestaurantJSON; reservations: ReservationJSON[] };
+    }
+  | { success: false }
+> {
   await dbConnect();
   try {
     const user = (await auth())?.user;
@@ -59,8 +68,8 @@ export async function getRestaurantReservations(restaurantID: string) {
     const restaurant = await getRestaurant(restaurantID);
     if (restaurant.success) {
       const queryOptions: { restaurant: string; user?: string } = { restaurant: restaurantID };
-      if (!restaurant.data.admin.includes(user.id)) {
-        queryOptions.user = user.id;
+      if (restaurant.data.owner != user.id && !restaurant.data.admin.includes(user.id)) {
+        return { success: false };
       }
       const reservations = (await Reservation.find(queryOptions)).map((e) =>
         clearReservationObjectID(e)
@@ -122,8 +131,8 @@ export async function createReservation(formState: unknown, formData: FormData) 
 }
 
 async function fetchReservation(id: string): Promise<PopulatedReservationJSON | null> {
+  await dbConnect();
   try {
-    await dbConnect();
     const reservation = clearPopulatedObjectID(
       (await Reservation.findById(id)
         .lean()
@@ -139,8 +148,15 @@ async function fetchReservation(id: string): Promise<PopulatedReservationJSON | 
 export async function getReservation(
   id: string
 ): Promise<{ success: true; data: PopulatedReservationJSON } | { success: false }> {
+  const user = (await auth())?.user;
+  if (!user) return { success: false };
   const reservation = await fetchReservation(id);
-  if (reservation) {
+  if (
+    reservation
+    && (reservation.user == user.id
+      || reservation.restaurant.owner == user.id
+      || reservation.restaurant.admin.includes(user.id))
+  ) {
     return { success: true, data: reservation };
   }
   return { success: false };
@@ -152,7 +168,7 @@ export async function editReservation(
 ): Promise<{ success: true; data: PopulatedReservationJSON } | { success: false }> {
   try {
     const user = (await auth())?.user;
-    if (!user || !reservationID || !approvalStatus) return { success: false };
+    if (!user) return { success: false };
     const reservation = await fetchReservation(reservationID);
     if (
       !reservation
@@ -162,9 +178,10 @@ export async function editReservation(
       return { success: false };
     }
     if (
-      reservation.user == user.id
-      || reservation.restaurant.owner == user.id
-      || reservation.restaurant.admin.includes(user.id)
+      (reservation.user == user.id && reservation.approvalStatus == "pending")
+      || ((reservation.restaurant.owner == user.id
+        || reservation.restaurant.admin.includes(user.id))
+        && reservation.approvalStatus == "approved")
     ) {
       const updatedReservation = clearPopulatedObjectID(
         (await Reservation.findByIdAndUpdate(
