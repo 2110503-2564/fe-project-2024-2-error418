@@ -181,31 +181,58 @@ export async function deleteRestaurant(id: string) {
   return { success: false };
 }
 
-export async function addRestaurantAdmin(formState: unknown, formData: FormData) {
-  const user = (await auth())?.user;
-  const restaurantID = formData.get("restaurantID") as string | null;
-  const adminEmail = formData.get("email") as string | null;
-  if (!user || !restaurantID || !adminEmail) return { success: false };
-
+export async function addRestaurantAdmin(restaurantID: string, adminEmail: string) {
   await dbConnect();
-  const [session, admin, restaurant] = await Promise.all([
-    auth(),
-    User.findOne({ email: adminEmail }),
-    Restaurant.findById(restaurantID),
-  ]);
-  if (!session || !admin || !restaurant || session.user.id != restaurant.owner.toString()) {
-    return { success: false };
+  try {
+    const [session, admin, restaurant] = await Promise.all([
+      auth(),
+      User.findOne({ email: adminEmail }),
+      Restaurant.findById(restaurantID),
+    ]);
+    if (!session || !admin || !restaurant || session.user.id != restaurant.owner.toString()) {
+      return { success: false };
+    }
+    const updatedRestaurant = clearRestaurantObjectID(
+      await Restaurant.findByIdAndUpdate(
+        restaurantID,
+        { $addToSet: { admin: admin.id } },
+        { new: true, runValidators: true }
+      )
+    );
+    if (updatedRestaurant) {
+      await admin.updateOne({ $addToSet: { restaurantAdmin: restaurantID } });
+      return { success: true, data: updatedRestaurant };
+    }
+  } catch (err) {
+    console.error(err);
   }
-  const updatedRestaurant = clearRestaurantObjectID(
-    await Restaurant.findByIdAndUpdate(
-      restaurantID,
-      { $addToSet: { admin: admin.id } },
-      { new: true, runValidators: true }
-    )
-  );
-  if (updatedRestaurant) {
-    await admin.updateOne({ $addToSet: { restaurantAdmin: restaurantID } });
-    return { success: true, data: updatedRestaurant };
+  return { success: false };
+}
+
+export async function removeRestaurantAdmin(restaurantID: string, adminID: string) {
+  await dbConnect();
+  try {
+    const [session, admin, restaurant] = await Promise.all([
+      auth(),
+      User.findById(adminID),
+      Restaurant.findById(restaurantID),
+    ]);
+    if (!session || !admin || !restaurant || session.user.id != restaurant.owner.toString()) {
+      return { success: false };
+    }
+    const updatedRestaurant = clearRestaurantObjectID(
+      await Restaurant.findByIdAndUpdate(
+        restaurantID,
+        { $pull: { admin: adminID } },
+        { new: true, runValidators: true }
+      )
+    );
+    if (updatedRestaurant) {
+      await admin.updateOne({ $pull: { restaurantAdmin: restaurantID } });
+      return { success: true, data: updatedRestaurant };
+    }
+  } catch (err) {
+    console.error(err);
   }
   return { success: false };
 }

@@ -1,7 +1,7 @@
 import { getPopulatedRestaurant } from "@/db/restaurants";
 import EditRestaurantForm from "./form";
-import { Avatar, List, ListItem } from "@mui/material";
-import AdminForm from "./adminForm";
+import AdminForm from "./AdminForm";
+import AdminList from "./AdminList";
 
 export default async function EditRestaurant({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -14,16 +14,9 @@ export default async function EditRestaurant({ params }: { params: Promise<{ id:
       <h1>Edit Restaurant</h1>
       <section>
         <div className="mx-auto w-fit">
-          <AdminForm id={id} />
+          <AdminForm id={id} data={restaurant.data.admin} />
           {restaurant.data.admin.length != 0 && (
-            <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-              {restaurant.data.admin.map((e) => (
-                <ListItem className="flex items-center gap-2" key={e.email}>
-                  <Avatar alt="Remy Sharp">RS</Avatar>
-                  {e.name}
-                </ListItem>
-              ))}
-            </List>
+            <AdminList restaurantID={id} data={restaurant.data.admin} />
           )}
         </div>
       </section>

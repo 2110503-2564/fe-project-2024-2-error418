@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import { Session } from "next-auth";
-import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
@@ -16,21 +15,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link } from "@/i18n/navigation";
 import { logoutUser } from "@/db/auth";
+import AvatarIcon from "./AvatarIcon";
 
 export default function AccountMenu({ session }: { session: Session | null }) {
-  function stringToColor(string: string) {
-    let hash = 0;
-    for (let i = 0; i < string.length; i += 1) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    let color = "#";
-    for (let i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += `00${value.toString(16)}`.slice(-2);
-    }
-    return color;
-  }
-
   const anchorEl = useRef<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState<boolean>(false);
   const handleClick = () => setOpen(true);
@@ -47,15 +34,7 @@ export default function AccountMenu({ session }: { session: Session | null }) {
           aria-expanded={open ? "true" : undefined}
           aria-haspopup="true"
         >
-          <Avatar
-            sx={{
-              width: 32,
-              height: 32,
-              bgcolor: session ? stringToColor(session.user.name) : undefined,
-            }}
-          >
-            {session ? session.user.name.charAt(0).toUpperCase() : null}
-          </Avatar>
+          <AvatarIcon width={32} height={32} name={session?.user.name} />
         </IconButton>
       </Tooltip>
       <Menu

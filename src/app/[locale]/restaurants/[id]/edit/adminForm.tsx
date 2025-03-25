@@ -1,21 +1,32 @@
-"use client";
-
 import { addRestaurantAdmin } from "@/db/restaurants";
 import { Button } from "@mui/material";
-import { useActionState, useEffect } from "react";
 import UserSearch from "./UserSearch";
+import { revalidatePath } from "next/cache";
 
-export default function AdminForm({ id }: { id: string }) {
-  const [state, action, pending] = useActionState(addRestaurantAdmin, undefined);
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
-
+export default function AdminForm({
+  id,
+  data,
+}: {
+  id: string;
+  data: { id: string; name: string; email: string }[];
+}) {
   return (
-    <form className="flex flex-col items-center gap-4 py-4" action={action}>
+    <form
+      className="flex flex-col items-center gap-4 py-4"
+      action={async (formData) => {
+        "use server";
+        const email = formData.get("email") as string | null;
+        if (email) {
+          const result = await addRestaurantAdmin(id, email);
+          if (result.success) {
+            revalidatePath(`/restaurants/${id}/edit`);
+          }
+        }
+      }}
+    >
       <input type="text" name="restaurantID" value={id} readOnly hidden />
-      <UserSearch name="email" />
-      <Button variant="contained" type="submit" disabled={pending}>
+      <UserSearch name="email" data={data} />
+      <Button variant="contained" type="submit">
         Add admin
       </Button>
     </form>

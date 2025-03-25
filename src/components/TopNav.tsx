@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import LocaleSwitcher from "./LocaleSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
-import Avatar from "./Avatar";
+import AccountMenu from "./AccountMenu";
 
 export default function TopNav({ session }: { session: Session | null }) {
   const text = useTranslations("TopNav");
@@ -19,7 +19,9 @@ export default function TopNav({ session }: { session: Session | null }) {
       <ul className="flex items-center gap-4">
         {links.map(({ href, name }) => (
           <li key={name}>
-            <Link href={href} className="text-[var(--foreground)] hover:text-gray-400">{name}</Link>
+            <Link href={href} className="text-[var(--foreground)] hover:text-gray-400">
+              {name}
+            </Link>
           </li>
         ))}
       </ul>
@@ -27,7 +29,7 @@ export default function TopNav({ session }: { session: Session | null }) {
       <div className="flex items-center gap-4">
         <LocaleSwitcher />
         <ThemeSwitcher />
-        <Avatar session={session} />
+        <AccountMenu session={session} />
       </div>
     </nav>
   );

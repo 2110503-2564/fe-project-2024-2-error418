@@ -8,7 +8,13 @@ import { UserJSON } from "@/db/models/User";
 import { getUserList } from "@/db/auth";
 import { useDebouncedCallback } from "use-debounce";
 
-export default function UserSearch({ name }: { name: string }) {
+export default function UserSearch({
+  name,
+  data,
+}: {
+  name: string;
+  data: { id: string; name: string; email: string }[];
+}) {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<readonly UserJSON[]>([]);
   const [loading, setLoading] = useState(false);
@@ -19,7 +25,7 @@ export default function UserSearch({ name }: { name: string }) {
     (async () => {
       setLoading(true);
       const users = await getUserList(
-        { email: { $regex: email } },
+        { $and: [{ email: { $regex: email } }, { email: { $nin: data.map((e) => e.email) } }] },
         { sort: { name: 1 }, limit: 5 }
       );
       setLoading(false);
