@@ -19,7 +19,7 @@ export default function RestaurantSearch({
 }: RestaurantSearchProps) {
   const [searchQuery, setSearchQuery] = useState(defaultValue);
   const [page, setPage] = useState(1);
-  const restaurantsPerPage = 8;
+  const restaurantsPerPage = 10;
 
   const filteredRestaurants = restaurants.filter((restaurant) =>
     restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -87,6 +87,10 @@ export default function RestaurantSearch({
             onChange={handlePageChange}
             color="primary"
             size="large"
+            sx={{
+              "& .MuiPaginationItem-root": { color: "var(--text-primary)" },
+              "& .Mui-selected": { backgroundColor: "var(--accent-color)", color: "white" },
+            }}
           />
         </div>
       )}

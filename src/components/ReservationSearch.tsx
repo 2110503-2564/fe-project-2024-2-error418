@@ -76,7 +76,7 @@ export default function ReservationSearch({
 }: ReservationsSearchProps) {
   const [searchQuery, setSearchQuery] = useState(defaultValue);
   const [page, setPage] = useState(1);
-  const reservationsPerPage = 8;
+  const reservationsPerPage = 10;
 
   const filteredReservations = reservations.filter((reservation) =>
     reservation.restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -137,6 +137,10 @@ export default function ReservationSearch({
             onChange={handlePageChange}
             color="primary"
             size="large"
+            sx={{
+              "& .MuiPaginationItem-root": { color: "var(--text-primary)" },
+              "& .Mui-selected": { backgroundColor: "var(--accent-color)", color: "white" },
+            }}
           />
         </div>
       )}
