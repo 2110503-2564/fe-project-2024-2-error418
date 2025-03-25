@@ -63,7 +63,7 @@ export default function CreateReservation() {
               },
               "& .MuiIconButton-root": { color: "var(--text-primary) !important" },
             }}
-            className="bg-bg-secondary w-55 rounded"
+            className="bg-bg-secondary w-65 rounded"
           />
         </LocalizationProvider>
 
@@ -82,7 +82,7 @@ export default function CreateReservation() {
               "&.Mui-focused fieldset": { borderColor: "var(--accent-color)" },
             },
           }}
-          className="bg-bg-secondary w-55 rounded"
+          className="bg-bg-secondary w-65 rounded"
         />
         <Button variant="contained" disabled={pending} type="submit">
           {btnText("submit")}
