@@ -3,11 +3,10 @@
 import { useActionState, useState } from "react";
 import {
   Button,
+  FilledInput,
   FormControl,
   IconButton,
   InputAdornment,
-  InputLabel,
-  OutlinedInput,
   TextField,
 } from "@mui/material";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
@@ -16,7 +15,6 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 export default function Register() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, action, pending] = useActionState(loginUser, undefined);
   const [showPassword, setShowPassword] = useState(false);
   const searchParams = useSearchParams();
@@ -40,17 +38,17 @@ export default function Register() {
             id="login-email"
             name="email"
             label={text("email")}
-            variant="outlined"
+            variant="filled"
             className="w-full rounded bg-[var(--inputbg)]"
             required
           />
           <FormControl variant="outlined">
-            <InputLabel htmlFor="login-password">{text("password")}</InputLabel>
-            <OutlinedInput
+            <FilledInput
               id="login-password"
               name="password"
               type={showPassword ? "text" : "password"}
               className="w-full bg-[var(--inputbg)]"
+              placeholder={text("password")}
               required
               endAdornment={
                 <InputAdornment position="end">
@@ -67,12 +65,12 @@ export default function Register() {
                   </IconButton>
                 </InputAdornment>
               }
-              label={text("password")}
             />
           </FormControl>
           <Button variant="contained" disabled={pending} type="submit" className="w-full">
             {btnText("submit")}
           </Button>
+          {state?.message && <span>{state.message}</span>}
         </form>
       </div>
     </main>

@@ -115,7 +115,7 @@ export async function getRestaurantReservations(
 const ReservationForm = z.object({
   reserveDate: z.string().datetime(),
   restaurant: z.string(),
-  personCount: z.number(),
+  personCount: z.number().min(1, { message: "Person count must be at least 1" }),
 });
 
 export async function createReservation(formState: unknown, formData: FormData) {
@@ -126,7 +126,8 @@ export async function createReservation(formState: unknown, formData: FormData) 
       restaurant: formData.get("restaurantID"),
       personCount: Number(formData.get("personCount")),
     });
-    if (!validatedFields.success) return { success: false, errors: validatedFields.error };
+    if (!validatedFields.success)
+      return { success: false, errors: validatedFields.error.flatten() };
     const user = (await auth())?.user;
     if (!user) return { success: false, message: "unauthorized" };
 

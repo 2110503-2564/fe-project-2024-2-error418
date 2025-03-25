@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import { useParams } from "next/navigation";
 import { Button, TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -13,9 +13,6 @@ import { useTranslations } from "next-intl";
 export default function CreateReservation() {
   const params = useParams<{ id: string }>();
   const [state, action, pending] = useActionState(createReservation, undefined);
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
   const [date, setDate] = useState<dayjs.Dayjs | null>(null);
 
   const text = useTranslations("CreateReservation");
@@ -83,10 +80,13 @@ export default function CreateReservation() {
             },
           }}
           className="bg-bg-secondary w-65 rounded"
+          error={!!state?.errors?.fieldErrors.personCount}
+          helperText={state?.errors?.fieldErrors.personCount}
         />
         <Button variant="contained" disabled={pending} type="submit">
           {btnText("submit")}
         </Button>
+        {state?.message && <span>{state.message}</span>}
       </form>
     </main>
   );
