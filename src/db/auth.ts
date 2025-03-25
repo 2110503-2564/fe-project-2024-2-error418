@@ -60,34 +60,35 @@ export async function registerUser(
   ).searchParams;
   const returnTo = searchParams.get("returnTo") || "/";
   const validatedFields = RegisterForm.safeParse({ name, phone, email, password });
-  try {
-    if (validatedFields.success) {
-      await dbConnect();
-      const { name, phone, email, password } = validatedFields.data;
-      const user = await User.insertOne({ name, phone, email, password });
-      if (user) {
-        await signIn("credentials", {
-          ...Object.fromEntries(formData),
-          redirect: false, // Prevent next-auth from handling the redirect
-        });
-        return redirect(returnTo);
-      }
-    } else {
-      console.log("register failed");
-      return {
-        success: false,
-        data: {
-          name: name?.toString(),
-          phone: phone?.toString(),
-          email: email?.toString(),
-          password: password?.toString(),
-        },
-        errors: validatedFields.error.flatten(),
-      };
+  if (validatedFields.success) {
+    await dbConnect();
+    const { name, phone, email, password } = validatedFields.data;
+    let user = undefined;
+    try {
+      user = await User.insertOne({ name, phone, email, password });
+    } catch (err) {
+      console.error(err);
+      return { success: false, message: "error occured (email might be used)" };
     }
-  } catch (err) {
-    console.error(err);
-    return { success: false, message: "error occured (email might be used)" };
+    if (user) {
+      await signIn("credentials", {
+        ...Object.fromEntries(formData),
+        redirect: false, // Prevent next-auth from handling the redirect
+      });
+      return redirect(returnTo);
+    }
+  } else {
+    console.log("register failed");
+    return {
+      success: false,
+      data: {
+        name: name?.toString(),
+        phone: phone?.toString(),
+        email: email?.toString(),
+        password: password?.toString(),
+      },
+      errors: validatedFields.error.flatten(),
+    };
   }
   return { success: false };
 }
