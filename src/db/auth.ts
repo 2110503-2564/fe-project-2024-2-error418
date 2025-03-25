@@ -26,37 +26,68 @@ export async function authenticateUser(email: string, password: string) {
 
 const RegisterForm = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }).trim(),
-  phone: z.string().trim(),
+  phone: z.string().min(1, { message: "Phone is required" }).trim(),
   email: z.string().email({ message: "Please enter a valid email" }),
   password: z.string().min(6, { message: "Password length must be at least 6" }).trim(),
 });
 
-export async function registerUser(formState: unknown, formData: FormData) {
-  const validatedFields = RegisterForm.safeParse({
-    name: formData.get("name"),
-    phone: formData.get("phone"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-  });
-
-  if (validatedFields.success) {
-    await dbConnect();
-    const { name, phone, email, password } = validatedFields.data;
-    const user = await User.insertOne({ name, phone, email, password });
-    if (user) {
-      await signIn("credentials", formData);
+export async function registerUser(
+  formState: unknown,
+  formData: FormData
+): Promise<{
+  success: false;
+  data?: {
+    name: string | undefined;
+    phone: string | undefined;
+    email: string | undefined;
+    password: string | undefined;
+  };
+  message?: string;
+  errors?: z.typeToFlattenedError<
+    { name: string; phone: string; email: string; password: string },
+    string
+  >;
+}> {
+  const [name, phone, email, password] = [
+    formData.get("name"),
+    formData.get("phone"),
+    formData.get("email"),
+    formData.get("password"),
+  ];
+  const validatedFields = RegisterForm.safeParse({ name, phone, email, password });
+  try {
+    if (validatedFields.success) {
+      await dbConnect();
+      const { name, phone, email, password } = validatedFields.data;
+      const user = await User.insertOne({ name, phone, email, password });
+      if (user) {
+        await signIn("credentials", formData);
+      }
+    } else {
+      console.log("register failed");
+      return {
+        success: false,
+        data: {
+          name: name?.toString(),
+          phone: phone?.toString(),
+          email: email?.toString(),
+          password: password?.toString(),
+        },
+        errors: validatedFields.error.flatten(),
+      };
     }
-  } else {
-    console.log("register failed");
-    return { success: false, errors: validatedFields.error.flatten() };
+  } catch (err) {
+    console.error(err);
   }
-  return { success: false };
+  return { success: false, message: "error occured (email might be used)" };
 }
 
 export async function loginUser(formState: unknown, formData: FormData) {
   try {
-    const searchParams = new URL(formData.get("callbackUrl")?.toString() || "", "http://localhost")
-      .searchParams;
+    const searchParams = new URL(
+      formData.get("callbackUrl")?.toString() || "",
+      process.env.NEXTAUTH_URL
+    ).searchParams;
     const returnTo = searchParams.get("returnTo") || "/";
     await signIn("credentials", {
       ...Object.fromEntries(formData),
@@ -65,14 +96,10 @@ export async function loginUser(formState: unknown, formData: FormData) {
     return redirect(returnTo);
   } catch (error) {
     if (error instanceof AuthError) {
-      const searchParams = new URL(
-        formData.get("callbackUrl")?.toString() || "",
-        "http://localhost"
-      ).searchParams;
-      const returnTo = searchParams.get("returnTo") || "";
-      const returnToParam = returnTo ? `&returnTo=${encodeURIComponent(returnTo)}` : "";
-
-      return redirect(`/login?error=${error.type}${returnToParam}`);
+      return {
+        success: false,
+        message: error.type == "CredentialsSignin" ? "invalid credentials" : "error occur",
+      };
     }
     throw error;
   }

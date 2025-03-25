@@ -3,11 +3,11 @@
 import { useActionState, useState } from "react";
 import {
   Button,
+  FilledInput,
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
-  InputLabel,
-  OutlinedInput,
   TextField,
 } from "@mui/material";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
@@ -15,28 +15,39 @@ import { registerUser } from "@/db/auth";
 import { useTranslations } from "next-intl";
 
 export default function Register() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, action, pending] = useActionState(registerUser, undefined);
   const [showPassword, setShowPassword] = useState(false);
 
   const text = useTranslations("Signin");
   const btnText = useTranslations("Button");
+  const arr = ["name", "email", "phone"] as const;
 
   return (
     <main className="p-4">
-      <div className="place-self-center bg-[var(--primary)] m-[20px] p-[20px] w-fit rounded border border-[#927d2b]">
+      <div className="m-[20px] w-fit place-self-center rounded border border-[#927d2b] bg-[var(--primary)] p-[20px]">
         <h1 className="text-center text-2xl font-bold">{text("register")}</h1>
         <form className="flex flex-col items-center gap-4 py-4" action={action}>
-          <TextField id="register-name" name="name" label={text("name")} variant="outlined" className="bg-[var(--inputbg)] rounded w-full"/>
-          <TextField id="register-email" name="email" label={text("email")} variant="outlined" className="bg-[var(--inputbg)] rounded w-full"/>
-          <TextField id="register-phone" name="phone" label={text("phone")} variant="outlined" className="bg-[var(--inputbg)] rounded w-full"/>
+          {arr.map((e) => (
+            <TextField
+              key={e}
+              id={`register-${e}`}
+              name={e}
+              label={text(e)}
+              variant="filled"
+              required
+              className="w-full rounded bg-[var(--inputbg)]"
+              error={!!state?.errors?.fieldErrors[e]}
+              helperText={state?.errors?.fieldErrors[e]?.join()}
+              defaultValue={state?.data ? state.data[e] : null}
+            />
+          ))}
           <FormControl variant="outlined">
-            <InputLabel htmlFor="register-password">{text("password")}</InputLabel>
-            <OutlinedInput
+            <FilledInput
               id="register-password"
               name="password"
               type={showPassword ? "text" : "password"}
-              className="bg-[var(--inputbg)] rounded w-full"
+              className="w-full rounded bg-[var(--inputbg)]"
+              required
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -54,12 +65,18 @@ export default function Register() {
                   </IconButton>
                 </InputAdornment>
               }
-              label={text("password")}
+              placeholder={text("password")}
+              error={!!state?.errors?.fieldErrors.password}
+              defaultValue={state?.data?.password}
             />
+            {state?.errors?.fieldErrors.email && (
+              <FormHelperText error>{state.errors.fieldErrors.email.join()}</FormHelperText>
+            )}
           </FormControl>
           <Button variant="contained" disabled={pending} type="submit" className="w-full">
             {btnText("submit")}
           </Button>
+          {state?.message && <span>{state.message}</span>}
         </form>
       </div>
     </main>
