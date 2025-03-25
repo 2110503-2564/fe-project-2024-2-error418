@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { RestaurantJSON } from "@/db/models/Restaurant";
 import { Link } from "@/i18n/navigation";
-import { TextField, InputAdornment } from "@mui/material";
+import { TextField, InputAdornment, Button, Pagination } from "@mui/material";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import RestaurantCard from "./RestaurantCard";
 import { useTranslations } from "next-intl";
@@ -18,12 +18,27 @@ export default function RestaurantSearch({
   defaultValue = "",
 }: RestaurantSearchProps) {
   const [searchQuery, setSearchQuery] = useState(defaultValue);
+  const [page, setPage] = useState(1);
+  const restaurantsPerPage = 8;
 
   const filteredRestaurants = restaurants.filter((restaurant) =>
     restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const text = useTranslations("Search");
+  const btnText = useTranslations("Button");
+
+  const startIndex = (page - 1) * restaurantsPerPage;
+  const endIndex = startIndex + restaurantsPerPage;
+
+  const restaurantsOnPage = filteredRestaurants.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(filteredRestaurants.length / restaurantsPerPage);
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -44,10 +59,14 @@ export default function RestaurantSearch({
           }}
         />
       </div>
-
+      <div className="mx-auto mb-6 flex w-full max-w-md justify-center">
+        <Button variant="contained" href="/restaurants/create">
+          {btnText("create-restaurant")}
+        </Button>
+      </div>
       <ul className="grid grid-cols-[repeat(auto-fit,minmax(16.5rem,1fr))] justify-items-center gap-8 py-4">
-        {filteredRestaurants.length > 0 ?
-          filteredRestaurants.map((e) => (
+        {restaurantsOnPage.length > 0 ?
+          restaurantsOnPage.map((e) => (
             <li key={e.id}>
               <Link href={`/restaurants/${e.id}`}>
                 <RestaurantCard {...e}></RestaurantCard>
@@ -59,6 +78,18 @@ export default function RestaurantSearch({
           </div>
         }
       </ul>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center py-4">
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+            color="primary"
+            size="large"
+          />
+        </div>
+      )}
     </>
   );
 }

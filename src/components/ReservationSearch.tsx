@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
-import { TextField, InputAdornment } from "@mui/material";
+import { TextField, InputAdornment, Pagination } from "@mui/material";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { PopulatedReservationJSON } from "@/db/reservations";
@@ -22,7 +22,6 @@ function Card({
   id,
   cancelReservation,
 }: PopulatedReservationJSON & { cancelReservation: (id: string) => Promise<void> }) {
-
   const statusText = useTranslations("Status");
   const btnText = useTranslations("Button");
 
@@ -76,12 +75,26 @@ export default function ReservationSearch({
   cancelReservation,
 }: ReservationsSearchProps) {
   const [searchQuery, setSearchQuery] = useState(defaultValue);
+  const [page, setPage] = useState(1);
+  const reservationsPerPage = 8;
 
   const filteredReservations = reservations.filter((reservation) =>
     reservation.restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const text = useTranslations("Search");
+
+  const startIndex = (page - 1) * reservationsPerPage;
+  const endIndex = startIndex + reservationsPerPage;
+
+  const reservationsOnPage = filteredReservations.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(filteredReservations.length / reservationsPerPage);
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -104,8 +117,8 @@ export default function ReservationSearch({
       </div>
 
       <ul className="grid grid-cols-[repeat(auto-fit,minmax(16.5rem,1fr))] justify-items-center gap-8 py-4">
-        {filteredReservations.length > 0 ?
-          filteredReservations.map((e) => (
+        {reservationsOnPage.length > 0 ?
+          reservationsOnPage.map((e) => (
             <li key={e.id}>
               <Card {...e} cancelReservation={cancelReservation} />
             </li>
@@ -115,6 +128,18 @@ export default function ReservationSearch({
           </div>
         }
       </ul>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center py-4">
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+            color="primary"
+            size="large"
+          />
+        </div>
+      )}
     </>
   );
 }
