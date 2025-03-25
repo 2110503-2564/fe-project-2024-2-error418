@@ -9,17 +9,18 @@
   },
   "HomePage": { "title": "จองร้านอาหาร", "greeting": "สวัสดี {username}"},
   "Restaurants": { "title": "ร้านอาหาร" },
-  "RestaurantCard": { "address":"ที่อยู่", "district":"ตำบล", "postal-code": "รหัสไปรษณีย์", "tel": "โทรศัพท์",
-    "reserve": "จอง", "edit": "แก้ไข"
+  "RestaurantCard": { "address":"ที่อยู่", "district":"ตำบล", "postalcode": "รหัสไปรษณีย์", "phone": "โทรศัพท์",
+    "province": "จังหวัด", "region": "ภูมิภาค", "reserve": "จอง", "edit": "แก้ไข", "name":"ชื่อ",
+    "dashboard":"สรุปร้านอาหาร", "add-admin":"เพื่มแอดมิน"
+  },
+  "RestaurantDashboard": { "title":"แผงสรุปร้านอาหาร", "detail":"ประวัติสถานะการอนุมัติ", 
+    "graph-title":"ความถี่การจอง", "dataName": "การจอง", "notfound":"ไม่พบการจองร้านอาหารนี้" 
   },
   "Reservations": { "title": "รายการจอง" },
   "ReservationCard": { "reserved":"เวลาที่จอง", "person-count":"จำนวนคน" },
   "ManageReservations": { "titel":"จัดการการจอง", "name":"ชื่อ", "date":"เวลาที่จอง", "personcount":"จำนวนคน", "status":"สถานะการอนุมัติ" },
   "ReservationDashboard": { "title":"แผงสรุปการจอง", "detail":"ประวัติสถานะการอนุมัติ", 
     "sub-title":"ร้านที่เลือกบ่อยที่สุด", "total-reservation": "การจองทั้งหมด", "notfound":"คุณไม่มีประวัติการจอง" 
-  },
-  "RestaurantDashboard": { "title":"แผงสรุปร้านอาหาร", "detail":"ประวัติสถานะการอนุมัติ", 
-    "graph-title":"ความถี่การจอง", "dataName": "การจอง", "notfound":"ไม่พบการจองร้านอาหารนี้" 
   },
   "Signin": { "register":"ลงทะเบียน", "login":"เข้าสู่ระบบ", "name":"ชื่อ", "email":"อีเมล", "phone":"หมายเลขโทรศัพท์", "password":"รหัส" },
   "CreateReservation": { "title":"สร้างการจอง", "reserve-time": "เวลาที่จอง", "person-count": "จำนวนคน" },

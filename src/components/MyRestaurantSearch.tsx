@@ -49,7 +49,7 @@ export default function RestaurantSearch({
         {filteredRestaurants.length > 0 ?
           filteredRestaurants.map((e) => (
             <li key={e.id}>
-              <Link href={`/dashboard/restaurants/${e.id}`}>
+              <Link href={`/restaurants/${e.id}`}>
                 <RestaurantCard {...e}></RestaurantCard>
               </Link>
             </li>
