@@ -45,7 +45,14 @@ export default function CreateReservation() {
           <DateTimePicker
             label={text("reserve-time")}
             value={date}
-            onChange={(val) => setDate(val)}
+            onChange={(val) => {
+              if (val && val.isValid()) {
+                setDate(val);
+              }
+            }}
+            slotProps={{
+              textField: { InputProps: { readOnly: true } }, // Prevent manual input
+            }}
             sx={{
               "& .MuiInputBase-input": { color: "var(--text-primary)" },
               "& .MuiInputLabel-root": { color: "var(--text-secondary)" },
@@ -54,6 +61,7 @@ export default function CreateReservation() {
                 "&:hover fieldset": { borderColor: "var(--border-color)" },
                 "&.Mui-focused fieldset": { borderColor: "var(--accent-color)" },
               },
+              "& .MuiIconButton-root": { color: "var(--text-primary) !important" },
             }}
             className="bg-bg-secondary w-55 rounded"
           />
