@@ -1,10 +1,14 @@
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export default function ServicesLayout() {
+
+  const text = useTranslations("Service");
+
   return (
     <div>
       <h1 className="mt-[50px] text-center font-bold text-[var(--foreground)] underline underline-offset-8">
-        SERVICES
+        {text("title")}
       </h1>
       <div className="flex-warp mt-[100px] flex flex-row justify-around p-[10px]">
         <div className="h-[30rem] w-[20rem] rounded bg-[var(--cardbg)] p-1 shadow-lg">
@@ -20,9 +24,9 @@ export default function ServicesLayout() {
             />
           </div>
           <div className="flex h-[50%] flex-col overflow-auto">
-            <div className="pt-4 pl-4 text-2xl">Seamless Booking Experience</div>
+            <div className="pt-4 pl-4 text-2xl">{text("booking-title")}</div>
             <span className="pt-4 pl-4">
-              Users can browse restaurants&apos; names, locations, and telephone numbers.
+              {text("booking-detail")}
             </span>
           </div>
         </div>
@@ -39,11 +43,9 @@ export default function ServicesLayout() {
             />
           </div>
           <div className="flex h-[50%] flex-col overflow-auto">
-            <div className="pt-4 pl-4 text-2xl">Real-Time Management</div>
-            <span className="pt-4 pl-4">
-              Virtual waitlist system to reduce physical waiting times.
-            </span>
-            <span className="pt-4 pl-4">Users can check live queue status and join remotely.</span>
+            <div className="pt-4 pl-4 text-2xl">{text("time-title")}</div>
+            <span className="pt-4 pl-4">{text("time-detail-1")}</span>
+            <span className="pt-4 pl-4">{text("time-detail-2")}</span>
           </div>
         </div>
         <div className="h-[30rem] w-[20rem] rounded bg-[var(--cardbg)] p-1 shadow-lg">
@@ -59,9 +61,9 @@ export default function ServicesLayout() {
             />
           </div>
           <div className="flex h-[50%] flex-col overflow-auto">
-            <div className="pt-4 pl-4 text-2xl">Optimized Restaurant Management</div>
+            <div className="pt-4 pl-4 text-2xl">{text("management-title")}</div>
             <span className="pt-4 pl-4">
-              A restaurant owner can create, update, and edit customers&apos; reservation statuses.
+              {text("management-detail")}
             </span>
           </div>
         </div>

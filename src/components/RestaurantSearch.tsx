@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { TextField, InputAdornment } from "@mui/material";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import RestaurantCard from "./RestaurantCard";
+import { useTranslations } from "next-intl";
 
 interface RestaurantSearchProps {
   restaurants: RestaurantJSON[];
@@ -22,12 +23,14 @@ export default function RestaurantSearch({
     restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const text = useTranslations("Search");
+
   return (
     <>
       <div className="mx-auto mb-6 w-full max-w-md">
         <TextField
           fullWidth
-          placeholder="Search restaurants..."
+          placeholder={text("placeholder")}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           variant="outlined"
@@ -52,7 +55,7 @@ export default function RestaurantSearch({
             </li>
           ))
         : <div className="col-span-full py-8 text-center">
-            No restaurants found matching &apos;{searchQuery}&apos;
+            {text("notfound")} &apos;{searchQuery}&apos;
           </div>
         }
       </ul>

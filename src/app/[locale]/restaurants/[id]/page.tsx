@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { auth } from "@/auth";
 import { getRestaurant } from "@/db/restaurants";
 import { Button } from "@mui/material";
+import { getTranslations } from "next-intl/server";
 
 export default async function Restaurant({ params }: { params: Promise<{ id: string }> }) {
   const user = (await auth())?.user;
@@ -16,6 +17,8 @@ export default async function Restaurant({ params }: { params: Promise<{ id: str
     );
   }
   const { data } = restaurant;
+
+  const text = await getTranslations("RestaurantCard");
   return (
     <main className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
@@ -35,23 +38,23 @@ export default async function Restaurant({ params }: { params: Promise<{ id: str
           <div className="flex flex-col items-start gap-4">
             <h1 className="text-3xl font-bold text-yellow-600">{data.name}</h1>
             <div className="text-xl">
-              <span>Address: {data.address}</span>
+              <span>{text("address")}: {data.address}</span>
               <br />
-              <span>District: {data.district}</span>
+              <span>{text("district")}: {data.district}</span>
               <br />
-              <span>Postal Code: {data.postalcode}</span>
+              <span>{text("postal-code")}: {data.postalcode}</span>
               <br />
-              <span>Tel: {data.phone}</span>
+              <span>{text("tel")}: {data.phone}</span>
             </div>
             <div className="mt-6 flex gap-4">
               {user && (
                 <Link href={`/restaurants/${data.id}/reserve`}>
-                  <Button variant="contained">Reserve</Button>
+                  <Button variant="contained">{text("reserve")}</Button>
                 </Link>
               )}
               {user && user.id == data.owner && (
                 <Link href={`/restaurants/${data.id}/edit`}>
-                  <Button variant="contained">Edit</Button>
+                  <Button variant="contained">{text("edit")}</Button>
                 </Link>
               )}
             </div>

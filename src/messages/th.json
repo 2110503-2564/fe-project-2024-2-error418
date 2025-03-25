@@ -1,7 +1,36 @@
 {
-  "Metadata": { "title": "จองร้านอาหาร", "description": "แอพจองร้านอาหารโปรดในดวงใจคุณ" },
-  "TopNav": { "home": "หน้าหลัก", "restaurants": "ร้านอาหาร", "reservations": "การจอง" },
-  "HomePage": { "title": "จองร้านอาหาร", "greeting": "สวัสดี {username}" },
+  "Metadata": { 
+    "title": "จองร้านอาหาร", 
+    "description": "แอพจองร้านอาหารโปรดในดวงใจคุณ" 
+  },
+  "TopNav": { "home": "หน้าหลัก", "restaurants": "ร้านอาหาร", "reservations": "การจอง",
+    "profile": "โปรไฟล์", "my-restaurant": "ร้านอาหารของคุณ", "my-reservation": "ประวัติการจอง", 
+    "logout": "ออกจากระบบ", "register": "ลงทะเบียน", "login": "เข้าสู่ระบบ", "account-setting": "การตั้งค่าบัญชี"
+  },
+  "HomePage": { "title": "จองร้านอาหาร", "greeting": "สวัสดี {username}"},
+  "Restaurants": { "title": "ร้านอาหาร" },
+  "RestaurantCard": { "address":"ที่อยู่", "district":"ตำบล", "postal-code": "รหัสไปรษณีย์", "tel": "โทรศัพท์",
+    "reserve": "จอง", "edit": "แก้ไข"
+  },
+  "Reservations": { "title": "รายการจอง" },
+  "ReservationCard": { "reserved":"เวลาที่จอง", "person-count":"จำนวนคน" },
+  "ReservationDashboard": { "title":"แผงสรุปการจอง", "detail":"ประวัติสถานะการอนุมัติ", 
+    "sub-title":"ร้านที่เลือกบ่อยที่สุด", "total-reservation": "การจองทั้งหมด", "notfound":"คุณไม่มีประวัติการจอง" 
+  },
+  "RestaurantDashboard": { "title":"แผงสรุปร้านอาหาร", "detail":"ประวัติสถานะการอนุมัติ", 
+    "graph-title":"ความถี่การจอง", "dataName": "การจอง", "notfound":"ไม่พบการจองร้านอาหารนี้" 
+  },
+  "Signin": { "register":"ลงทะเบียน", "login":"เข้าสู่ระบบ", "name":"ชื่อ", "email":"อีเมล", "phone":"หมายเลขโทรศัพท์", "password":"รหัส" },
+  "CreateReservation": { "title":"สร้างการจอง", "reserve-time": "เวลาที่จอง", "person-count": "จำนวนคน" },
+  "Status": { "canceled": "ยกเลิก", "rejected": "ปฏิเสธ", "pending": "รอดำเนินการ", "approved": "ยืนยัน", "total": "ทั้งหมด" },
+  "Search": { "placeholder": "ค้นหาร้านอาหาร...", "notfound":"ไม่พบร้านอาหารที่ตรงกัน" },
+  "Button": { "cancel": "ยกเลิก", "view-restaurant": "ดูร้านอาหาร", "submit": "ส่ง" },
+  "Profile": { "profile": "โปรไฟล์", "phone": "หมายเลขโทรศัพท์", "email": "อีเมล", "logout": "ออกจากระบบ" },
+  "Service": { "title": "การบริการ", 
+    "booking-title": "ประสบการณ์การจองที่ราบรื่น", "booking-detail": "ผู้ใช้สามารถเรียกดูชื่อร้านอาหาร สถานที่ตั้ง และหมายเลขโทรศัพท์ได้",
+    "time-title": "การจัดการแบบเรียลไทม์", "time-detail-1": "ระบบรายการรอเสมือนเพื่อลดเวลาในการรอ", "time-detail-2": "ผู้ใช้สามารถตรวจสอบสถานะคิวแบบสดและเข้าร่วมจากระยะไกลได้",
+    "management-title": "การจัดการร้านอาหารที่ปรับปรุงให้มีประสิทธิภาพ", "management-detail": "เจ้าของร้านอาหารสามารถสร้าง อัปเดต และแก้ไขสถานะการจองของลูกค้าได้"
+  },
   "LocaleSwitcher": {
     "label": "เปลี่ยนภาษา",
     "locale": "{locale, select, th {ไทย} en {English} other {ไม่ทราบ}}"

@@ -8,6 +8,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { createReservation } from "@/db/reservations";
 import dayjs from "dayjs";
+import { useTranslations } from "next-intl";
 
 export default function CreateReservation() {
   const params = useParams<{ id: string }>();
@@ -17,9 +18,12 @@ export default function CreateReservation() {
   }, [state]);
   const [date, setDate] = useState<dayjs.Dayjs | null>(null);
 
+  const text = useTranslations("CreateReservation");
+  const btnText = useTranslations("Button");
+
   return (
     <main className="p-4">
-      <h1 className="text-center text-2xl font-bold">Create Reservation</h1>
+      <h1 className="text-center text-2xl font-bold">{text("title")}</h1>
       <form className="flex flex-col items-center gap-4 py-4" action={action}>
         <input
           type="text"
@@ -39,7 +43,7 @@ export default function CreateReservation() {
         />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimePicker
-            label="Reserve time"
+            label={text("reserve-time")}
             value={date}
             onChange={(val) => setDate(val)}
             sx={{
@@ -58,7 +62,7 @@ export default function CreateReservation() {
         <TextField
           id="reservation-personCount"
           name="personCount"
-          label="Person Count"
+          label={text("person-count")}
           variant="outlined"
           type="number"
           InputLabelProps={{ style: { color: "var(--text-secondary)" } }}
@@ -73,7 +77,7 @@ export default function CreateReservation() {
           className="bg-bg-secondary w-55 rounded"
         />
         <Button variant="contained" disabled={pending} type="submit">
-          Submit
+          {btnText("submit")}
         </Button>
       </form>
     </main>

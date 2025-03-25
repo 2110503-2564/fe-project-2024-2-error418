@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { editReservation, getReservation } from "@/db/reservations";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@mui/material";
+import { getTranslations } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -24,6 +25,9 @@ export default async function Reservation({ params }: { params: Promise<{ id: st
 
   const reserveDate = new Date(data.reserveDate); // Convert to Date object
 
+  const text = await getTranslations("ReservationCard");
+  const btnText = await getTranslations("Button");
+
   return (
     <main className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
@@ -43,9 +47,9 @@ export default async function Reservation({ params }: { params: Promise<{ id: st
           <div className="flex flex-col items-start gap-4">
             <h1 className="text-3xl font-bold text-yellow-600">{data.restaurant.name}</h1>
             <div className="text-xl">
-              <span>Reserved On: {reserveDate.toLocaleString()}</span>
+              <span>{text("reserved")}: {reserveDate.toLocaleString()}</span>
               <br />
-              <span>Person Count: {data.personCount}</span>
+              <span>{text("person-count")}: {data.personCount}</span>
             </div>
             <div className="mt-6 flex gap-4">
               {user && (
@@ -54,7 +58,7 @@ export default async function Reservation({ params }: { params: Promise<{ id: st
                     variant="contained"
                     className="rounded bg-yellow-500 px-4 py-2 font-bold text-white shadow-md hover:bg-yellow-700"
                   >
-                    View Restaurant
+                    {btnText("view-restaurant")}
                   </Button>
                 </Link>
               )}
@@ -71,7 +75,7 @@ export default async function Reservation({ params }: { params: Promise<{ id: st
                     className="rounded bg-red-500 px-4 py-2 font-bold text-white shadow-md hover:bg-red-700"
                     type="submit"
                   >
-                    Cancel
+                    {btnText("cancel")}
                   </Button>
                 </form>
               )}
