@@ -54,6 +54,11 @@ export async function registerUser(
     formData.get("email"),
     formData.get("password"),
   ];
+  const searchParams = new URL(
+    formData.get("callbackUrl")?.toString() || "",
+    process.env.NEXTAUTH_URL
+  ).searchParams;
+  const returnTo = searchParams.get("returnTo") || "/";
   const validatedFields = RegisterForm.safeParse({ name, phone, email, password });
   try {
     if (validatedFields.success) {
@@ -61,7 +66,11 @@ export async function registerUser(
       const { name, phone, email, password } = validatedFields.data;
       const user = await User.insertOne({ name, phone, email, password });
       if (user) {
-        await signIn("credentials", formData);
+        await signIn("credentials", {
+          ...Object.fromEntries(formData),
+          redirect: false, // Prevent next-auth from handling the redirect
+        });
+        return redirect(returnTo);
       }
     } else {
       console.log("register failed");
