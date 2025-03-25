@@ -32,6 +32,9 @@ const RegisterForm = z.object({
 });
 
 export async function registerUser(formState: unknown, formData: FormData) {
+  const searchParams = new URL(formData.get("callbackUrl")?.toString() || "", "http://localhost")
+    .searchParams;
+  const returnTo = searchParams.get("returnTo") || "/";
   const validatedFields = RegisterForm.safeParse({
     name: formData.get("name"),
     phone: formData.get("phone"),
@@ -44,7 +47,11 @@ export async function registerUser(formState: unknown, formData: FormData) {
     const { name, phone, email, password } = validatedFields.data;
     const user = await User.insertOne({ name, phone, email, password });
     if (user) {
-      await signIn("credentials", formData);
+      await signIn("credentials", {
+        ...Object.fromEntries(formData),
+        redirect: false, // Prevent next-auth from handling the redirect
+      });
+      return redirect(returnTo);
     }
   } else {
     console.log("register failed");
