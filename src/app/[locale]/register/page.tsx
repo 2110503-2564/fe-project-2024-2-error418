@@ -78,8 +78,8 @@ export default function Register() {
               error={!!state?.errors?.fieldErrors.password}
               defaultValue={state?.data?.password}
             />
-            {state?.errors?.fieldErrors.email && (
-              <FormHelperText error>{state.errors.fieldErrors.email.join()}</FormHelperText>
+            {state?.errors?.fieldErrors.password && (
+              <FormHelperText error>{state.errors.fieldErrors.password.join()}</FormHelperText>
             )}
           </FormControl>
           <Button variant="contained" disabled={pending} type="submit" className="w-full">
