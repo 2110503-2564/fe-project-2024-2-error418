@@ -3,12 +3,18 @@ import { getRestaurants } from "@/db/restaurants";
 import { redirect } from "next/navigation";
 import MyRestaurantSearch from "@/components/MyRestaurantSearch";
 import { getTranslations } from "next-intl/server";
+import { getUserData } from "@/db/auth";
 export default async function MyRestaurants() {
   const session = await auth();
   if (!session) {
     redirect(`/login?returnTo=${encodeURIComponent("/dashboard/restaurants")}`);
   }
-  const restaurants = await getRestaurants({}, { owner: session.user.id });
+  const user = await getUserData(session.user.id);
+  const restaurantAdminID = user.success ? user.data.restaurantAdmin : [];
+  const restaurants = await getRestaurants(
+    {},
+    { $or: [{ owner: session.user.id }, { _id: { $in: restaurantAdminID } }] }
+  );
   if (!restaurants.success) {
     return <main>Cannot fetch data</main>;
   }

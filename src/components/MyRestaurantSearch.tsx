@@ -7,7 +7,6 @@ import { TextField, InputAdornment, Button, Pagination } from "@mui/material";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import RestaurantCard from "./RestaurantCard";
 import { useTranslations } from "next-intl";
-import { getTranslations } from "next-intl/server";
 
 interface RestaurantSearchProps {
   restaurants: RestaurantJSON[];
