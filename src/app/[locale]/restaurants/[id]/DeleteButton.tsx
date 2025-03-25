@@ -8,6 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { FormEvent, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function DeleteButton({
   confirmText,
@@ -21,10 +22,12 @@ export default function DeleteButton({
 
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const btnText = useTranslations("Button")
   return (
     <>
-      <Button size="small" onClick={handleClickOpen}>
-        Delete
+      <Button size="small" onClick={handleClickOpen} color="error">
+        {btnText("delete")}
       </Button>
       <Dialog
         open={open}

@@ -34,6 +34,14 @@
     "dataName": "การจอง",
     "notfound": "ไม่พบการจองร้านอาหารนี้"
   },
+  "AddAdmin": { 
+    "titel":"เพิ่มผู้ดูแลร้านอาหาร", 
+    "name":"ชื่อ", 
+    "email":"อีเมล", 
+    "role":"บทบาท",
+    "placeholder":"เลือกอีเมล",
+    "admin":"แอดมิน"
+  },
   "Reservations": { "title": "รายการจอง" },
   "ReservationCard": { "reserved": "เวลาที่จอง", "person-count": "จำนวนคน" },
   "ManageReservations": {
@@ -79,7 +87,8 @@
     "management": "จัดการสถานะการจอง",
     "reject": "ปฏิเสธ",
     "approve": "ยืนยัน",
-    "delete": "ลบ"
+    "delete": "ลบ",
+    "add-admin": "เพื่มแอดมิน"
   },
   "Profile": {
     "profile": "โปรไฟล์",

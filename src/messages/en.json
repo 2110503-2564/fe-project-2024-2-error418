@@ -37,6 +37,14 @@
     "dataName": "Reservations",
     "notfound": "No past Reservation for this restaurant"
   },
+  "AddAdmin": { 
+    "titel":"Add Restaurant Admin", 
+    "name":"Name", 
+    "email":"Email", 
+    "role":"Role",
+    "placeholder":"Select Email",
+    "admin":"Admin"
+  },
   "Reservations": { "title": "Reservations" },
   "ReservationCard": { "reserved": "Reserved On", "person-count": "Person Count" },
   "ManageReservations": {
@@ -82,7 +90,8 @@
     "management": "Manage Reservation Status",
     "reject": "Reject",
     "approve": "Approve",
-    "delete": "Delete"
+    "delete": "Delete",
+    "add-admin": "Add Admin"
   },
   "Profile": {
     "profile": "Profile",
