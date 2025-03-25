@@ -14,6 +14,7 @@
   },
   "Reservations": { "title": "Reservations" },
   "ReservationCard": { "reserved":"Reserved On", "person-count":"Person Count" },
+  "ManageReservations": { "titel":"Manage Reservations", "name":"Name", "date":"Reserve Date", "personcount":"Person Count", "status":"Approval Status" },
   "ReservationDashboard": { "title":"Reservation Dashboard", "detail":"Past Approval Status", 
     "sub-title":"Top Restaurant", "total-reservation": "Total Reservation", "notfound":"You dont have any past Reservation" 
   },
@@ -24,7 +25,7 @@
   "CreateReservation": { "title":"Create Reservation", "reserve-time": "Reserve time", "person-count": "Person Count" },
   "Status": { "canceled": "Canceled", "rejected": "Rejected", "pending": "Pending", "approved": "Approved", "total": "Total" },
   "Search": { "placeholder": "Search restaurants...", "notfound": "No restaurants found matching" },
-  "Button": { "cancel": "CANCEL", "view-restaurant": "View Restaurant", "submit": "SUBMIT" },
+  "Button": { "cancel": "CANCEL", "view-restaurant": "View Restaurant", "submit": "SUBMIT", "management":"Manage Reservation Status", "reject":"Reject", "approve": "Approve"  },
   "Profile": { "profile": "Profile", "phone": "Phone Number", "email": "Email Address", "logout": "Logout" },
   "Service": { "title": "SERVICES", 
     "booking-title": "Seamless Booking Experience", "booking-detail": "Users can browse restaurants' names, locations, and telephone numbers.",

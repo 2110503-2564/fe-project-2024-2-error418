@@ -14,6 +14,7 @@
   },
   "Reservations": { "title": "รายการจอง" },
   "ReservationCard": { "reserved":"เวลาที่จอง", "person-count":"จำนวนคน" },
+  "ManageReservations": { "titel":"จัดการการจอง", "name":"ชื่อ", "date":"เวลาที่จอง", "personcount":"จำนวนคน", "status":"สถานะการอนุมัติ" },
   "ReservationDashboard": { "title":"แผงสรุปการจอง", "detail":"ประวัติสถานะการอนุมัติ", 
     "sub-title":"ร้านที่เลือกบ่อยที่สุด", "total-reservation": "การจองทั้งหมด", "notfound":"คุณไม่มีประวัติการจอง" 
   },
@@ -24,7 +25,7 @@
   "CreateReservation": { "title":"สร้างการจอง", "reserve-time": "เวลาที่จอง", "person-count": "จำนวนคน" },
   "Status": { "canceled": "ยกเลิก", "rejected": "ปฏิเสธ", "pending": "รอดำเนินการ", "approved": "ยืนยัน", "total": "ทั้งหมด" },
   "Search": { "placeholder": "ค้นหาร้านอาหาร...", "notfound":"ไม่พบร้านอาหารที่ตรงกัน" },
-  "Button": { "cancel": "ยกเลิก", "view-restaurant": "ดูร้านอาหาร", "submit": "ส่ง" },
+  "Button": { "cancel": "ยกเลิก", "view-restaurant": "ดูร้านอาหาร", "submit": "ส่ง", "management":"จัดการสถานะการจอง", "reject":"ปฏิเสธ", "approve": "ยืนยัน" },
   "Profile": { "profile": "โปรไฟล์", "phone": "หมายเลขโทรศัพท์", "email": "อีเมล", "logout": "ออกจากระบบ" },
   "Service": { "title": "การบริการ", 
     "booking-title": "ประสบการณ์การจองที่ราบรื่น", "booking-detail": "ผู้ใช้สามารถเรียกดูชื่อร้านอาหาร สถานที่ตั้ง และหมายเลขโทรศัพท์ได้",

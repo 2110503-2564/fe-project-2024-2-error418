@@ -3,6 +3,8 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import { auth } from "@/auth";
 import { getApprovalStatus, getFrequency } from "@/db/dashboard";
 import { getTranslations } from "next-intl/server";
+import { Button } from "@mui/material";
+import { getRestaurant } from "@/db/restaurants";
 
 export default async function RestaurantDashboard({ params }: { params: Promise<{ id: string }> }) {
   const user = (await auth())?.user;
@@ -16,6 +18,8 @@ export default async function RestaurantDashboard({ params }: { params: Promise<
 
   const text = await getTranslations("RestaurantDashboard");
   const statusText = await getTranslations("Status");
+  const btnText = await getTranslations("Button")
+
   return (
     <main>
       <section className="p-8">
@@ -61,13 +65,16 @@ export default async function RestaurantDashboard({ params }: { params: Promise<
                     </div>
                   </div>
                 </div>
-              <div className="font-bold mt-5 mb-6 flex flex-row">
+              <div className="font-bold mt-5 flex flex-row">
                 <div className="mr-[5px] h-[35px] w-[130px] pt-[6px] rounded-full bg-[var(--cardhoverbg)] text-center">
                   {statusText("total")}
                 </div>
                 <div className="pt-[6px]">
                   : {approvalStatus.data.total || 0}
                 </div>
+              </div>
+              <div className="font-bold mt-5 mb-6 flex flex-row">
+                <Button variant="contained" href={`/dashboard/restaurants/${id}/reservations`}>{btnText("management")}</Button>
               </div>
             </div>
             : <div className="text-center">{text("notfound")}</div>
