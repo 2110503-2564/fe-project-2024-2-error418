@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { getPopulatedRestaurant } from "@/db/restaurants";
 // import { getTranslations } from "next-intl/server";
 import EditRestaurantForm from "./form";
+import { getTranslations } from "next-intl/server";
 
 export default async function Restaurant({ params }: { params: Promise<{ id: string }> }) {
   const user = (await auth())?.user;
@@ -18,8 +19,10 @@ export default async function Restaurant({ params }: { params: Promise<{ id: str
   const { data } = popRestaurant;
   // const text = await getTranslations("RestaurantCard");
 
+  const errText = await getTranslations("error")
+
   if (!user || user.id != data.owner) {
-    return <h1>You are not allowed to edit this restaurant</h1>;
+    return <h1>{errText("not-allowed-edit")}</h1>;
   }
 
   return (

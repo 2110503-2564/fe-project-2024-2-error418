@@ -113,5 +113,8 @@
   "LocaleSwitcher": {
     "label": "เปลี่ยนภาษา",
     "locale": "{locale, select, th {ไทย} en {English} other {ไม่ทราบ}}"
+  },
+  "error": {
+    "not-allowed-edit" : "คุณไม่ได้รับอนุญาตให้แก้ไขร้านอาหารนี้"
   }
 }
