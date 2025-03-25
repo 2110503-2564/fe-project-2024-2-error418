@@ -3,34 +3,96 @@
     "title": "Restaurant Reservation",
     "description": "The best way to reserve your favorite restaurant"
   },
-  "TopNav": { "home": "Home", "restaurants": "Restaurants", "reservations": "Reservations",
-    "profile": "Profile", "my-restaurant": "My Restaurants", "my-reservation": "Reservation History", 
-    "logout": "Logout", "register": "Register", "login": "Login", "account-setting": "Account settings"
+  "TopNav": {
+    "home": "Home",
+    "restaurants": "Restaurants",
+    "reservations": "Reservations",
+    "profile": "Profile",
+    "my-restaurant": "My Restaurants",
+    "my-reservation": "Reservation History",
+    "logout": "Logout",
+    "register": "Register",
+    "login": "Login",
+    "account-setting": "Account settings"
   },
   "HomePage": { "title": "Restaurant Reservation", "greeting": "Hello {username}" },
   "Restaurants": { "title": "Restaurants" },
-  "RestaurantCard": { "address":"Address", "district":"District", "postal-code": "Postal Code", "tel": "Tel",
-    "reserve": "Reserve", "edit": "Edit"
+  "RestaurantCard": {
+    "address": "Address",
+    "district": "District",
+    "postal-code": "Postal Code",
+    "tel": "Tel",
+    "reserve": "Reserve",
+    "edit": "Edit"
   },
   "Reservations": { "title": "Reservations" },
-  "ReservationCard": { "reserved":"Reserved On", "person-count":"Person Count" },
-  "ManageReservations": { "titel":"Manage Reservations", "name":"Name", "date":"Reserve Date", "personcount":"Person Count", "status":"Approval Status" },
-  "ReservationDashboard": { "title":"Reservation Dashboard", "detail":"Past Approval Status", 
-    "sub-title":"Top Restaurant", "total-reservation": "Total Reservation", "notfound":"You dont have any past Reservation" 
+  "ReservationCard": { "reserved": "Reserved On", "person-count": "Person Count" },
+  "ManageReservations": {
+    "titel": "Manage Reservations",
+    "name": "Name",
+    "date": "Reserve Date",
+    "personcount": "Person Count",
+    "status": "Approval Status"
   },
-  "RestaurantDashboard": { "title":"Restaurant Dashboard", "detail":"Past Approval Status", 
-    "graph-title":"Reservation Frequency", "dataName": "Reservations", "notfound":"No past Reservation for this restaurant" 
+  "ReservationDashboard": {
+    "title": "Reservation Dashboard",
+    "detail": "Past Approval Status",
+    "sub-title": "Top Restaurant",
+    "total-reservation": "Total Reservation",
+    "notfound": "You dont have any past Reservation"
   },
-  "Signin": { "register":"Register", "login":"Login", "name":"Name", "email":"Email", "phone":"Phone", "password":"Password" },
-  "CreateReservation": { "title":"Create Reservation", "reserve-time": "Reserve time", "person-count": "Person Count" },
-  "Status": { "canceled": "Canceled", "rejected": "Rejected", "pending": "Pending", "approved": "Approved", "total": "Total" },
+  "RestaurantDashboard": {
+    "title": "Restaurant Dashboard",
+    "detail": "Past Approval Status",
+    "graph-title": "Reservation Frequency",
+    "dataName": "Reservations",
+    "notfound": "No past Reservation for this restaurant"
+  },
+  "Signin": {
+    "register": "Register",
+    "login": "Login",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password"
+  },
+  "CreateReservation": {
+    "title": "Create Reservation",
+    "reserve-time": "Reserve time",
+    "person-count": "Person Count"
+  },
+  "Status": {
+    "canceled": "Canceled",
+    "rejected": "Rejected",
+    "pending": "Pending",
+    "approved": "Approved",
+    "total": "Total"
+  },
   "Search": { "placeholder": "Search restaurants...", "notfound": "No restaurants found matching" },
-  "Button": { "cancel": "CANCEL", "view-restaurant": "View Restaurant", "submit": "SUBMIT", "management":"Manage Reservation Status", "reject":"Reject", "approve": "Approve"  },
-  "Profile": { "profile": "Profile", "phone": "Phone Number", "email": "Email Address", "logout": "Logout" },
-  "Service": { "title": "SERVICES", 
-    "booking-title": "Seamless Booking Experience", "booking-detail": "Users can browse restaurants' names, locations, and telephone numbers.",
-    "time-title": "Real-Time Management", "time-detail-1": "Virtual waitlist system to reduce physical waiting times.", "time-detail-2": "Users can check live queue status and join remotely.",
-    "management-title": "Optimized Restaurant Management", "management-detail": "A restaurant owner can create, update, and edit customers' reservation statuses."
+  "Button": {
+    "cancel": "CANCEL",
+    "create-restaurant": "Create Restaurant",
+    "view-restaurant": "View Restaurant",
+    "submit": "SUBMIT",
+    "management": "Manage Reservation Status",
+    "reject": "Reject",
+    "approve": "Approve"
+  },
+  "Profile": {
+    "profile": "Profile",
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "logout": "Logout"
+  },
+  "Service": {
+    "title": "SERVICES",
+    "booking-title": "Seamless Booking Experience",
+    "booking-detail": "Users can browse restaurants' names, locations, and telephone numbers.",
+    "time-title": "Real-Time Management",
+    "time-detail-1": "Virtual waitlist system to reduce physical waiting times.",
+    "time-detail-2": "Users can check live queue status and join remotely.",
+    "management-title": "Optimized Restaurant Management",
+    "management-detail": "A restaurant owner can create, update, and edit customers' reservation statuses."
   },
   "LocaleSwitcher": {
     "label": "Change language",

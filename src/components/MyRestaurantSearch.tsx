@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { RestaurantJSON } from "@/db/models/Restaurant";
 import { Link } from "@/i18n/navigation";
-import { TextField, InputAdornment } from "@mui/material";
+import { TextField, InputAdornment, Button } from "@mui/material";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import RestaurantCard from "./RestaurantCard";
 import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 interface RestaurantSearchProps {
   restaurants: RestaurantJSON[];
@@ -24,6 +25,7 @@ export default function RestaurantSearch({
   );
 
   const text = useTranslations("Search");
+  const btnText = useTranslations("Button");
 
   return (
     <>
@@ -44,7 +46,11 @@ export default function RestaurantSearch({
           }}
         />
       </div>
-
+      <div className="mx-auto mb-6 flex w-full max-w-md justify-center">
+        <Button variant="contained" href="/restaurants/create">
+          {btnText("create-restaurant")}
+        </Button>
+      </div>
       <ul className="grid grid-cols-[repeat(auto-fit,minmax(16.5rem,1fr))] justify-items-center gap-8 py-4">
         {filteredRestaurants.length > 0 ?
           filteredRestaurants.map((e) => (
