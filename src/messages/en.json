@@ -28,7 +28,8 @@
     "edit": "Edit",
     "name": "Name",
     "dashboard": "Restaurant Dashboard",
-    "add-admin": "Add Admin"
+    "add-admin": "Add Admin",
+    "create" : "Create Restaurant"
   },
   "RestaurantDashboard": {
     "title": "Restaurant Dashboard",
