@@ -87,8 +87,9 @@ export async function registerUser(
     }
   } catch (err) {
     console.error(err);
+    return { success: false, message: "error occured (email might be used)" };
   }
-  return { success: false, message: "error occured (email might be used)" };
+  return { success: false };
 }
 
 export async function loginUser(formState: unknown, formData: FormData) {
