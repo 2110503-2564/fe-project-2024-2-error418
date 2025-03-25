@@ -46,7 +46,27 @@ export default function UserSearch({
 
   return (
     <Autocomplete
-      sx={{ width: 300 }}
+      sx={{
+        width: 300,
+        "& .MuiAutocomplete-input": { color: "var(--text-primary)" },
+        "& .MuiOutlinedInput-root": {
+          backgroundColor: "var(--bg-secondary)",
+          "& fieldset": { borderColor: "var(--border-color)" },
+          "&:hover fieldset": { borderColor: "var(--border-color)" },
+          "&.Mui-focused fieldset": { borderColor: "var(--accent-color)" },
+        },
+        "& .MuiInputLabel-root": { color: "var(--text-secondary) !important" },
+        "& .MuiSvgIcon-root": { color: "var(--text-primary) !important" },
+        "& .MuiAutocomplete-paper": {
+          backgroundColor: "var(--bg-secondary) !important",
+          color: "var(--text-primary) !important",
+        },
+        "& .MuiAutocomplete-listbox": {
+          backgroundColor: "var(--bg-secondary)",
+          color: "var(--text-primary)",
+        },
+        "& .MuiAutocomplete-option:hover": { backgroundColor: "var(--accent-color)" },
+      }}
       open={open}
       onOpen={handleOpen}
       onClose={handleClose}
